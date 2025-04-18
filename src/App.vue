@@ -1,43 +1,144 @@
 <script setup>
-
 import { ref, computed } from 'vue'
 
+const termoBusca = ref(''); // Definindo o estado para o termo de busca
 </script>
+
 <template>
-  <div class="menu">
-    <!-- menu de navegação -->
-    <nav>
-      <ul class="antes-barra">
-        <li><a href="#ifbooks" class="logo">IFbooks</a></li>
-        <li class="barrinha"></li>
-        <li class="slogan">
-          Aprecie a <br />
-          Leitura
-        </li>
-      </ul>
-      <div class="barra-pesquisa">
-        <input type="text" v-model="termoBusca" placeholder="Pesquisar" />
-        <i class="fa-solid fa-magnifying-glass"></i>
-      </div>
-      <ul class="apos-barra">
-        <li><a href="#termo">Termo</a></li>
-        <li><a href="#equipe">Equipe</a></li>
-        <li><a href="#envio">Envio</a></li>
-        <li><a href="#devolucoes">Devoluções</a></li>
-        <li class="icon-com-barra"><a href="#carrinho"><i class="fa-solid fa-cart-shopping"></i></a></li>
-        <li class="icon-com-barra"><a href="#favoritos"><i class="fa-solid fa-heart"></i></a></li>
-        <li><a href="#perfil"><i class="fa-solid fa-user"></i></a></li>
-      </ul>
+  <body>
+    <div class="menu">
+      <!-- menu de navegação -->
+      <nav>
+        <ul class="antes-barra">
+          <li><a href="#ifbooks" class="logo">IFbooks</a></li>
+          <li class="barrinha"></li>
+          <li class="slogan">Aprecie a <br />Leitura</li>
+        </ul>
+        <div class="barra-pesquisa">
+          <input type="text" v-model="termoBusca" placeholder="Pesquisar" />
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </div>
+        <ul class="apos-barra">
+          <li><a href="#termo">Termo</a></li>
+          <li><a href="#equipe">Equipe</a></li>
+          <li><a href="#envio">Envio</a></li>
+          <li><a href="#devolucoes">Devoluções</a></li>
+          <li class="icon-com-barra"><a href="#carrinho"><i class="fa-solid fa-cart-shopping"></i></a></li>
+          <li class="icon-com-barra"><a href="#favoritos"><i class="fa-solid fa-heart"></i></a></li>
+          <li><a href="#perfil"><i class="fa-solid fa-user"></i></a></li>
+        </ul>
+      </nav>
+      <div class="linha-roxa"></div>
+    </div>
 
-    </nav>
-    <div class="linha-roxa"></div>
-  </div>
-
+    <main>
+      <section class="autor-abril">
+        <div class="holly">
+          <div>
+            <p><span>Autora de Abril</span></p>
+          </div>
+          <h1>Holly Black</h1>
+          <p>Holly Black é uma escritora e editora norte-americana mais conhecida por sua ficção infantil e juvenil. Seu trabalho inclui a série "O Povo do Ar", best-seller do The New York Times para jovens adultos.</p>
+          <button @click="navigateToBookPage">Acessar página do livro</button>
+        </div>
+        <div class="img">
+          <img src="https://i.ibb.co/RTy0nbh0/image-removebg-preview.png" alt="principe-cruel">
+          <p>*within the stock limit</p>
+        </div>
+      </section>
+    </main>
+  </body>
 </template>
+
 <style scoped>
+body {
+  font-family: 'Poppins', sans-serif;
+}
+
+.autor-abril {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5rem;
+  padding: 4rem 2rem;
+}
+.autor-abril .holly,
+.autor-abril .img {
+  margin: 0; 
+  width: 40%;
+  max-width: 400px;
+}
+
+.autor-abril h1 {
+  font-weight: bold;
+  font-size: xxx-large;
+  color: #382C2C;
+}
+
+.autor-abril p {
+  color: #4D4C4C;
+}
+
+.autor-abril div.holly {
+  margin: 0 5vw;
+  width: 45%;
+}
+
+
+.autor-abril div.holly div {
+  width: 130px;
+  border: 2px solid #4E1EB5;
+  padding: 7px 0 7px 0;
+  margin: 2rem 0;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.autor-abril div.holly span {
+  color: #4E1EB5;
+}
+
+.autor-abril div.holly p {
+  max-width: 500px;
+}
+
+.autor-abril button {
+  font-family: 'Poppins', sans-serif;
+  background-color: #4E1EB5;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 0.75rem 1.5rem;
+  margin-top: 1.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.autor-abril button:hover {
+  background-color: #3b0ca0;
+}
+
+
+.autor-abril div.img {
+  margin: 0 5vw;
+  width: 45%;
+}
+
+.autor-abril div.img img {
+  width: 440px;
+  height: auto;
+}
+
+.autor-abril div.img p {
+  font-size: 15px;
+  color: #4D4C4C;
+  margin-top: 8px;
+  text-align: right;
+}
 
 /* css menu */
-
 .icon-com-barra {
   position: relative;
   display: flex;
@@ -57,7 +158,6 @@ import { ref, computed } from 'vue'
   background-color: #4E1EB5;
 }
 
-/* Mudar a cor dos ícones para roxo */
 .icon-com-barra a i,
 .apos-barra li a i {
   color: #4E1EB5;
@@ -79,7 +179,7 @@ import { ref, computed } from 'vue'
 }
 
 .apos-barra li a:hover {
-  color: #4E1EB5; 
+  color: #4E1EB5;
 }
 
 .barra-pesquisa {
@@ -169,8 +269,9 @@ nav ul li a {
 
 .linha-roxa {
   width: 100%;
-  height: 1px; 
-  background-color: #4E1EB5; 
-  margin-top: 15px; 
+  height: 1px;
+  background-color: #4E1EB5;
+  margin-top: 15px;
 }
 </style>
+

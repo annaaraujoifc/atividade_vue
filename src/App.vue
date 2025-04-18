@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { ref,} from 'vue'
 
 const termoBusca = ref(''); // Definindo o estado para o termo de busca
 </script>
@@ -38,7 +38,7 @@ const termoBusca = ref(''); // Definindo o estado para o termo de busca
             <p><span>Autora de Abril</span></p>
           </div>
           <h1>Holly Black</h1>
-          <p>Holly Black é uma escritora e editora norte-americana mais conhecida por sua ficção infantil e juvenil. Seu trabalho inclui a série "O Povo do Ar", best-seller do The New York Times para jovens adultos.</p>
+          <p>Holly Black é uma escritora e editora norte-americana mais conhecida por sua ficção infantil e juvenil. Seu trabalho inclui a série <span id="povo-do-ar">"O Povo do Ar"</span>, best-seller do The New York Times para jovens adultos.</p>
           <button @click="navigateToBookPage">Acessar página do livro</button>
         </div>
         <div class="img">
@@ -61,6 +61,7 @@ body {
   align-items: center;
   gap: 5rem;
   padding: 4rem 2rem;
+  margin-bottom: 2px solid #4E1EB5;
 }
 .autor-abril .holly,
 .autor-abril .img {
@@ -99,6 +100,10 @@ body {
   color: #4E1EB5;
 }
 
+#povo-do-ar {
+  color: #4E1EB5;
+  font-weight: bold;
+}
 .autor-abril div.holly p {
   max-width: 500px;
 }
@@ -274,4 +279,3 @@ nav ul li a {
   margin-top: 15px;
 }
 </style>
-

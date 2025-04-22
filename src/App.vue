@@ -79,7 +79,7 @@ const totalCarrinho = computed(() =>
 </script>
 
 <template>
-  <div class="menu">
+  <header class="menu">
     <nav>
       <ul class="antes-barra">
         <li><a href="#ifbooks" class="logo">IFbooks</a></li>
@@ -112,7 +112,7 @@ const totalCarrinho = computed(() =>
       </ul>
     </nav>
     <div class="linha-roxa"></div>
-  </div>
+  </header>
 
   <main>
     <!-- HOME -->
@@ -192,8 +192,45 @@ const totalCarrinho = computed(() =>
       <button @click="paginaAtual = 'home'" class="btn-voltar">Voltar para loja</button>
     </section>
   </main>
+    <!-- Rodapé -->
+    <footer class="rodape">
+      <div class="container-rodape">
+        <div class="redes-sociais">
+          <a href="index.html" class="logo">IFBooks</a>
+          <div class="icones">
+            <i class="fab fa-facebook"></i>
+            <i class="fab fa-instagram"></i>
+            <i class="fab fa-twitter"></i>
+          </div>
+        </div>
+        <div class="contatos">
+          <p>Contatos</p>
+          <p><i class="fas fa-phone-alt"></i> +55 47 99999-9999</p>
+          <p><i class="fas fa-envelope"></i> contato@ebooks.com</p>
+          <p><i class="fas fa-map-marker-alt"></i> Rua da Leitura, 123 - SC</p>
+          <div class="pagamento">
+            <img
+              src="https://i.ibb.co/ccfhYRbJ/paipal-1.png"
+              alt="PayPal"
+              class="icone-cartao"
+            />
+            <img
+              src="https://i.ibb.co/ybp3bbW/Master-Card-Logo-1979-1.png"
+              alt="Mastercard"
+              class="icone-cartao"
+            />
+            <img
+              src="https://i.ibb.co/bgpdtpx0/VISA-card-logo-1.png"
+              alt="Visa"
+              class="icone-cartao"
+            />
+          </div>
+        </div>
+      </div>
+      <hr class="linha-divisoria" />
+      <p class="copyright">© Alguns direitos reservados | IFBooks 2025</p>
+    </footer>
 </template>
-
 
 <style scoped>
 body {
@@ -299,18 +336,18 @@ body {
 }
 
 .icon-com-barra::after {
-  content: "";
+  content: '';
   position: absolute;
   top: 10px;
   right: 0;
   width: 1px;
   height: 22px;
-  background-color: #4E1EB5;
+  background-color: #4e1eb5;
 }
 
 .icon-com-barra a i,
 .apos-barra li a i {
-  color: #4E1EB5;
+  color: #4e1eb5;
 }
 
 .apos-barra li {
@@ -325,11 +362,11 @@ body {
   text-decoration: none;
   font-size: 15px;
   padding: 0 10px;
-  color: #7B7881;
+  color: #7b7881;
 }
 
 .apos-barra li a:hover {
-  color: #4E1EB5;
+  color: #4e1eb5;
 }
 
 .barra-pesquisa {
@@ -344,14 +381,14 @@ body {
   border: none;
   outline: none;
   background: transparent;
-  color: #4E1EB5;
+  color: #4e1eb5;
   font-size: 14px;
   padding: 5px 0 5px 0;
   flex-grow: 1;
 }
 
 .barra-pesquisa i {
-  color: #4E1EB5;
+  color: #4e1eb5;
   font-size: 18px;
   margin-left: 70px;
   cursor: pointer;
@@ -384,7 +421,7 @@ nav ul li a {
 
 .logo {
   font-size: 18px;
-  color: #231F2D;
+  color: #231f2d;
 }
 
 .antes-barra {
@@ -397,30 +434,215 @@ nav ul li a {
 }
 
 .antes-barra li:first-child::after {
-  content: "";
+  content: '';
   position: absolute;
   top: 10px;
   right: 6px;
   width: 1px;
   height: 35px;
-  background-color: #4E1EB5;
+  background-color: #4e1eb5;
 }
 
 .slogan {
-  color: #4E1EB5;
+  color: #4e1eb5;
   font-size: 14px;
   line-height: 1;
   margin-left: -55px;
 }
 
 .apos-barra a {
-  color: #4E1EB5;
+  color: #4e1eb5;
 }
 
 .linha-roxa {
   width: 100%;
   height: 1px;
-  background-color: #4E1EB5;
+  background-color: #4e1eb5;
   margin-top: 15px;
+}
+
+/* css conteudo e lançamentos */
+.livros-section {
+  background-color: #fff;
+}
+
+.botoes-informacoes {
+  display: flex;
+  justify-content: space-around;
+  padding: 32px 11vw;
+  border-bottom: 1px solid #ccc;
+  background: #fff;
+  font-weight: 700;
+}
+
+.botoes-informacoes span {
+  font-weight: 600;
+}
+
+.item-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #4e1eb5;
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.item-info i {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+/* Lançamentos */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+.titulo-secao {
+  font-size: 28px;
+  margin: 0 0 2vw 0;
+  font-weight: 600;
+}
+.livros-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  row-gap: 75px;
+}
+.card-livro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+}
+.livro-capa img {
+  width: auto;
+  height: 240px;
+  object-fit: contain;
+  margin-bottom: 10px;
+}
+.livro-titulo {
+  font-size: 15px;
+  font-weight: bold;
+  margin-top: 10px;
+  text-align: justify;
+}
+.livro-autor {
+  color: #555;
+  font-size: 13px;
+  text-align: justify;
+}
+.livro-preco {
+  margin: 8px 0;
+  font-weight: bold;
+  text-align: left;
+}
+.acoes {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 12px;
+}
+.preco-favorito {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 87%;
+}
+.btn-comprar {
+  background-color: #4e1eb5;
+  color: white;
+  border: none;
+  padding: 13px 80px;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.icone-coracao {
+  font-size: 18px;
+  color: #4e1eb5;
+}
+/* rodapé */
+.rodape {
+  margin: 10vw 0 0 0;
+  background-color: #4e1eb5;
+  color: white;
+  font-size: 14px;
+}
+.container-rodape {
+  padding: 40px 10vw 20px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+.redes-sociais .logo {
+  font-size: 15px;
+  margin-bottom: 10px;
+  color: white;
+  text-decoration: none;
+}
+.icones {
+  display: flex;
+  gap: 10px;
+}
+.icones i {
+  width: 20px;
+  height: 20px;
+  background-color: white;
+  color: #4e1eb5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  border-radius: 2px;
+}
+.contatos {
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+}
+.contatos p {
+  margin: 4px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.contatos i {
+  font-size: 14px;
+  color: white;
+}
+.titulo-contato {
+  font-weight: bold;
+  margin-bottom: 6px;
+  font-size: 15px;
+}
+.pagamento {
+  margin-top: 12px;
+  display: flex;
+  gap: 8px;
+}
+.icone-cartao {
+  width: 38px;
+  height: 25px;
+}
+.linha-divisoria {
+  width: 100%;
+  height: 2px;
+  background-color: rgba(218, 208, 224, 0.726);
+  border: none;
+  margin: 20px 0;
+}
+.copyright {
+  text-align: center;
+  padding: 10px;
+  font-size: 12px;
+  color: rgba(218, 208, 224, 0.726);
 }
 </style>

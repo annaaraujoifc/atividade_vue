@@ -56,6 +56,7 @@ const livros = [
   },
 ]
 </script>
+
 <template>
   <div class="menu">
     <!-- menu de navegação -->
@@ -90,6 +91,21 @@ const livros = [
     </nav>
     <div class="linha-roxa"></div>
   </div>
+  <main>
+    <section class="autor-abril">
+        <div class="holly">
+          <div>
+            <p><span>Autora de Abril</span></p>
+          </div>
+          <h1>Holly Black</h1>
+          <p>Holly Black é uma escritora e editora norte-americana mais conhecida por sua ficção infantil e juvenil. Seu trabalho inclui a série "O Povo do Ar", best-seller do The New York Times para jovens adultos.</p>
+          <button @click="navigateToBookPage">Acessar página do livro</button>
+        </div>
+        <div class="img">
+          <img src="https://i.ibb.co/RTy0nbh0/image-removebg-preview.png" alt="principe-cruel">
+          <p>*within the stock limit</p>
+        </div>
+      </section>
   <!-- conteudo -->
   <section class="livros-section">
     <div class="botoes-informacoes">
@@ -126,11 +142,13 @@ const livros = [
         </div>
       </div>
     </div>
+  </section>
+  </main>
     <!-- Rodapé -->
     <footer class="rodape">
       <div class="container-rodape">
         <div class="redes-sociais">
-          <p class="logo">IFbooks</p>
+          <a href="index.html" class="logo">IFBooks</a>
           <div class="icones">
             <i class="fab fa-facebook"></i>
             <i class="fab fa-instagram"></i>
@@ -144,17 +162,17 @@ const livros = [
           <p><i class="fas fa-map-marker-alt"></i> Rua da Leitura, 123 - SC</p>
           <div class="pagamento">
             <img
-              src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg"
+              src="https://i.ibb.co/ccfhYRbJ/paipal-1.png"
               alt="PayPal"
               class="icone-cartao"
             />
             <img
-              src="https://upload.wikimedia.org/wikipedia/commons/0/04/Mastercard-logo.png"
+              src="https://i.ibb.co/ybp3bbW/Master-Card-Logo-1979-1.png"
               alt="Mastercard"
               class="icone-cartao"
             />
             <img
-              src="https://upload.wikimedia.org/wikipedia/commons/4/41/Visa_Logo.png"
+              src="https://i.ibb.co/bgpdtpx0/VISA-card-logo-1.png"
               alt="Visa"
               class="icone-cartao"
             />
@@ -164,9 +182,96 @@ const livros = [
       <hr class="linha-divisoria" />
       <p class="copyright">© Alguns direitos reservados | IFBooks 2025</p>
     </footer>
-  </section>
 </template>
+
 <style scoped>
+body {
+  font-family: 'Poppins', sans-serif;
+}
+
+.autor-abril {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5rem;
+  padding: 4rem 2rem;
+}
+.autor-abril .holly,
+.autor-abril .img {
+  margin: 0; 
+  width: 40%;
+  max-width: 400px;
+}
+
+.autor-abril h1 {
+  font-weight: bold;
+  font-size: xxx-large;
+  color: #382C2C;
+}
+
+.autor-abril p {
+  color: #4D4C4C;
+}
+
+.autor-abril div.holly {
+  margin: 0 5vw;
+  width: 45%;
+}
+
+
+.autor-abril div.holly div {
+  width: 130px;
+  border: 2px solid #4E1EB5;
+  padding: 7px 0 7px 0;
+  margin: 2rem 0;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.autor-abril div.holly span {
+  color: #4E1EB5;
+}
+
+.autor-abril div.holly p {
+  max-width: 500px;
+}
+
+.autor-abril button {
+  font-family: 'Poppins', sans-serif;
+  background-color: #4E1EB5;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 0.75rem 1.5rem;
+  margin-top: 1.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.autor-abril button:hover {
+  background-color: #3b0ca0;
+}
+
+
+.autor-abril div.img {
+  margin: 0 5vw;
+  width: 45%;
+}
+
+.autor-abril div.img img {
+  width: 440px;
+  height: auto;
+}
+
+.autor-abril div.img p {
+  font-size: 15px;
+  color: #4D4C4C;
+  margin-top: 8px;
+  text-align: right;
+}
+
 /* css menu */
 .icon-com-barra {
   position: relative;
@@ -341,19 +446,17 @@ nav ul li a {
   margin: 0 auto;
   padding: 40px 20px;
 }
-
 .titulo-secao {
   font-size: 28px;
   margin: 0 0 2vw 0;
   font-weight: 600;
 }
-
 .livros-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 24px;
+  row-gap: 75px;
 }
-
 .card-livro {
   display: flex;
   flex-direction: column;
@@ -361,89 +464,79 @@ nav ul li a {
   justify-content: space-between;
   height: 100%;
 }
-
 .livro-capa img {
   width: auto;
   height: 240px;
   object-fit: contain;
   margin-bottom: 10px;
 }
-
 .livro-titulo {
   font-size: 15px;
   font-weight: bold;
   margin-top: 10px;
   text-align: justify;
 }
-
 .livro-autor {
   color: #555;
   font-size: 13px;
   text-align: justify;
 }
-
 .livro-preco {
   margin: 8px 0;
   font-weight: bold;
   text-align: left;
 }
-
 .acoes {
   display: flex;
   justify-content: center;
   align-items: center;
   margin-top: 12px;
 }
-
 .preco-favorito {
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 87%;
 }
-
 .btn-comprar {
   background-color: #4e1eb5;
   color: white;
   border: none;
-  padding: 7px 80px;
-  font-size: 15px;
+  padding: 13px 80px;
+  font-size: 16px;
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: 8px;
 }
-
 .icone-coracao {
   font-size: 18px;
   color: #4e1eb5;
 }
-
 /* rodapé */
 .rodape {
+  margin: 10vw 0 0 0;
   background-color: #4e1eb5;
   color: white;
-  padding: 40px 10vw 20px;
   font-size: 14px;
 }
-
 .container-rodape {
+  padding: 40px 10vw 20px;
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
   align-items: flex-start;
 }
-
 .redes-sociais .logo {
   font-size: 15px;
   margin-bottom: 10px;
+  color: white;
+  text-decoration: none;
 }
-
 .icones {
   display: flex;
   gap: 10px;
 }
-
 .icones i {
   width: 20px;
   height: 20px;
@@ -455,7 +548,6 @@ nav ul li a {
   font-size: 16px;
   border-radius: 2px;
 }
-
 .contatos {
   text-align: left;
   display: flex;
@@ -463,43 +555,37 @@ nav ul li a {
   align-items: flex-start;
   gap: 5px;
 }
-
 .contatos p {
   margin: 4px 0;
   display: flex;
   align-items: center;
   gap: 8px;
 }
-
 .contatos i {
   font-size: 14px;
   color: white;
 }
-
 .titulo-contato {
   font-weight: bold;
   margin-bottom: 6px;
   font-size: 15px;
 }
-
 .pagamento {
   margin-top: 12px;
   display: flex;
   gap: 8px;
 }
-
 .icone-cartao {
   width: 38px;
   height: 25px;
 }
-
 .linha-divisoria {
-  height: 3px;
   width: 100%;
-  background-color: rgba(218, 208, 224, 0.301);
-  margin: 30px 0 0 0;
+  height: 2px;
+  background-color: rgba(218, 208, 224, 0.726);
+  border: none;
+  margin: 20px 0; /* Espaço acima e abaixo da linha */
 }
-
 .copyright {
   text-align: center;
   padding: 10px;

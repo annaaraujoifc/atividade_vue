@@ -73,6 +73,22 @@ function adicionarAoCarrinho(produto) {
   }
 }
 
+function removerDoCarrinho(id) {
+  carrinho.value = carrinho.value.filter(item => item.id !== id)
+}
+
+function aumentarQuantidade(item) {
+  item.quantidade += 1
+}
+
+function diminuirQuantidade(item) {
+  if (item.quantidade > 1) {
+    item.quantidade -= 1
+  } else {
+    removerDoCarrinho(item)
+  }
+}
+
 const totalCarrinho = computed(() =>
   carrinho.value.reduce((total, item) => total + item.preco * item.quantidade, 0).toFixed(2)
 )
@@ -82,7 +98,7 @@ const totalCarrinho = computed(() =>
   <header class="menu">
     <nav>
       <ul class="antes-barra">
-        <li><a href="#ifbooks" class="logo">IFbooks</a></li>
+        <li><a href="index.html" class="logo">IFbooks</a></li>
         <li class="barrinha"></li>
         <li class="slogan">
           Aprecie a <br />
@@ -175,22 +191,57 @@ const totalCarrinho = computed(() =>
     </section>
 
     <!-- CARRINHO -->
-    <section v-if="paginaAtual === 'carrinho'" class="pagina-carrinho">
-      <h1>Carrinho</h1>
-      <div v-if="carrinho.length === 0">
-        <p>Seu carrinho está vazio.</p>
-      </div>
-      <div v-else>
-        <div v-for="item in carrinho" :key="item.id" class="item-carrinho">
-          <p><strong>{{ item.titulo }}</strong></p>
-          <input type="number" v-model.number="item.quantidade" min="1" />
-          <p>Subtotal: R$ {{ (item.preco * item.quantidade).toFixed(2) }}</p>
+  <section v-if="paginaAtual === 'carrinho'" class="pagina-carrinho">
+    <h1>Carrinho</h1>
+
+    <div v-if="carrinho.length === 0">
+      <p>Seu carrinho está vazio.</p>
+    </div>
+
+    <div v-else>
+      <!-- Cabeçalhos -->
+        <div class="titulos">
+          <h2>Título</h2>
+          <h2>Quantidade</h2>
+          <h2>Subtotal</h2>
         </div>
-        <hr>
-        <p class="total"><strong>Total: R$ {{ totalCarrinho }}</strong></p>
+    <!-- Itens do carrinho -->
+  <div v-for="item in carrinho" :key="item.id" class="item-carrinho">
+    <!-- Coluna Título -->
+      <div class="coluna">
+        <img :src="item.imagem" alt="Capa do livro" class="imagem-livro-carrinho" />
+        <div>
+          <h3 class="titulo-livro">{{ item.titulo }}</h3>
+          <p class="autor-livro">{{ item.autor }}</p>
+          <p><span>R$ {{ item.preco.toFixed(2) }}</span></p>
+        </div>
       </div>
-      <button @click="paginaAtual = 'home'" class="btn-voltar">Voltar para loja</button>
-    </section>
+    <!-- Coluna Quantidade -->
+      <div class="coluna">
+        <div class="quantidade-area">
+          <button @click="diminuirQuantidade(item)" class="btn-quantidade">-</button>
+          <span>{{ item.quantidade }}</span>
+          <button @click="aumentarQuantidade(item)" class="btn-quantidade">+</button>
+        </div>
+        <button @click="removerDoCarrinho(item)" class="btn-remover">X</button>
+      </div>
+      <!-- Coluna Subtotal -->
+      <div class="coluna">
+        <p><strong>R$ {{ (item.preco * item.quantidade).toFixed(2) }}</strong></p>
+      </div>
+    </div>
+
+      <div>
+        <p class="total"><strong>Total da Compra</strong></p>
+        <p>Produtos: R$ {{ totalCarrinho }}</p>
+        <p>Frete: Grátis</p>
+        <p>Total: </p>
+        <button>Ir para o pagamento</button>
+      </div>
+  </div>
+
+  <button @click="paginaAtual = 'home'" class="btn-voltar">Voltar para loja</button>
+</section>
   </main>
     <!-- Rodapé -->
     <footer class="rodape">
@@ -233,10 +284,6 @@ const totalCarrinho = computed(() =>
 </template>
 
 <style scoped>
-body {
-  font-family: 'Poppins', sans-serif;
-}
-
 .autor-abril {
   display: flex;
   justify-content: center;
@@ -244,6 +291,7 @@ body {
   gap: 5rem;
   padding: 4rem 2rem;
   margin-bottom: 2px solid #4E1EB5;
+  font-family: 'Poppins', sans-serif;
 }
 .autor-abril .holly,
 .autor-abril .img {
@@ -257,17 +305,13 @@ body {
   font-size: xxx-large;
   color: #382C2C;
 }
-
 .autor-abril p {
   color: #4D4C4C;
 }
-
 .autor-abril div.holly {
   margin: 0 5vw;
   width: 45%;
 }
-
-
 .autor-abril div.holly div {
   width: 130px;
   border: 2px solid #4E1EB5;
@@ -277,11 +321,9 @@ body {
   text-align: center;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
-
 .autor-abril div.holly span {
   color: #4E1EB5;
 }
-
 #povo-do-ar {
   color: #4E1EB5;
   font-weight: bold;
@@ -289,7 +331,6 @@ body {
 .autor-abril div.holly p {
   max-width: 500px;
 }
-
 .autor-abril button {
   font-family: 'Poppins', sans-serif;
   background-color: #4E1EB5;
@@ -302,30 +343,27 @@ body {
   cursor: pointer;
   transition: background-color 0.3s;
 }
-
 .autor-abril button:hover {
   background-color: #3b0ca0;
 }
-
-
 .autor-abril div.img {
   margin: 0 5vw;
   width: 45%;
 }
-
 .autor-abril div.img img {
   width: 440px;
   height: auto;
 }
-
 .autor-abril div.img p {
   font-size: 15px;
   color: #4D4C4C;
   margin-top: 8px;
   text-align: right;
 }
-
-/* css menu */
+/*MENU*/
+header {
+  font-family: 'Poppins', sans-serif;
+}
 .icon-com-barra {
   position: relative;
   display: flex;
@@ -334,7 +372,6 @@ body {
   padding-right: 5px;
   margin-right: -10px;
 }
-
 .icon-com-barra::after {
   content: '';
   position: absolute;
@@ -344,18 +381,15 @@ body {
   height: 22px;
   background-color: #4e1eb5;
 }
-
 .icon-com-barra a i,
 .apos-barra li a i {
   color: #4e1eb5;
 }
-
 .apos-barra li {
   display: flex;
   align-items: center;
   justify-content: center;
 }
-
 .apos-barra li a {
   display: flex;
   align-items: center;
@@ -364,11 +398,9 @@ body {
   padding: 0 10px;
   color: #7b7881;
 }
-
 .apos-barra li a:hover {
   color: #4e1eb5;
 }
-
 .barra-pesquisa {
   display: flex;
   align-items: center;
@@ -376,7 +408,6 @@ body {
   padding: 3px 15px;
   margin: 0.7vw 5vw 0 5vw;
 }
-
 .barra-pesquisa input {
   border: none;
   outline: none;
@@ -386,14 +417,12 @@ body {
   padding: 5px 0 5px 0;
   flex-grow: 1;
 }
-
 .barra-pesquisa i {
   color: #4e1eb5;
   font-size: 18px;
   margin-left: 70px;
   cursor: pointer;
 }
-
 nav {
   display: flex;
   justify-content: center;
@@ -401,7 +430,6 @@ nav {
   flex-wrap: wrap;
   margin: 0.5vw 0 0 0;
 }
-
 nav ul {
   list-style: none;
   display: flex;
@@ -410,20 +438,16 @@ nav ul {
   padding: 0;
   margin: 0;
 }
-
 nav ul li {
   padding: 1rem 1rem 0 0;
 }
-
 nav ul li a {
   text-decoration: none;
 }
-
 .logo {
   font-size: 18px;
   color: #231f2d;
 }
-
 .antes-barra {
   align-items: center;
   text-align: center;
@@ -464,6 +488,7 @@ nav ul li a {
 /* css conteudo e lançamentos */
 .livros-section {
   background-color: #fff;
+  font-family: 'Poppins', sans-serif;
 }
 
 .botoes-informacoes {
@@ -566,12 +591,134 @@ nav ul li a {
   font-size: 18px;
   color: #4e1eb5;
 }
+/* CARRINHO */
+.pagina-carrinho {
+  padding: 3rem;
+  font-family: 'Poppins', sans-serif;
+  max-width: 700px;
+}
+.pagina-carrinho h1 {
+  color: #4E1EB5;
+  font-size: xx-large;
+}
+.pagina-carrinho h2 {
+  font-weight: bold;
+  font-size: x-large;
+}
+.pagina-carrinho h3 {
+  font-weight: bold;
+  font-size: large;
+}
+.pagina-carrinho .titulos {
+  display: flex;
+  gap: 25vw;
+}
+
+.container-titulos {
+  display: flex;
+}
+
+.item-carrinho {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 1rem;
+}
+.item-carrinho p {
+  margin: 0;
+}
+.coluna {
+  display: flex;
+}
+.coluna span {
+  font-weight: bold;
+}
+.info-livro-carrinho {
+  display: flex;
+}
+.imagem-livro-carrinho {
+  width: 100px; 
+  height: auto; 
+  border-radius: 8px; /* opcional: cantos arredondados */
+  margin-right: 6px; 
+}
+
+.quantidade-area {
+  display: flex;
+  align-items: center;
+}
+
+.btn-quantidade {
+  background-color: #4E1EB5;
+  color: white;
+  border: none;
+  padding: 4px 10px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.btn-quantidade:hover {
+  background-color: #3a1694;
+}
+
+.quantidade-area span {
+  min-width: 30px;
+  text-align: center;
+  display: inline-block;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.btn-remover {
+  background-color: transparent;
+  color: #ff4d4d;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.btn-remover:hover {
+  color: #d10000;
+}
+
+.total {
+  margin-top: 1rem;
+  font-size: 1.2rem;
+  text-align: right;
+}
+
+.btn-voltar {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: white;
+  color: black;
+  border: 2px solid black;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  transition: background-color 0.2s ease;
+}
+
+.btn-voltar:hover {
+  background-color: #f7f4fd;
+}
+
 /* rodapé */
 .rodape {
   margin: 10vw 0 0 0;
   background-color: #4e1eb5;
   color: white;
   font-size: 14px;
+  font-family: 'Poppins', sans-serif;
 }
 .container-rodape {
   padding: 40px 10vw 20px;

@@ -55,6 +55,16 @@ const livros = [
     preco: 'R$33,94',
   },
 ]
+const favoritos = ref([])
+const toggleFavorito = (livro) => {
+  const index = favoritos.value.findIndex((f) => f.titulo === livro.titulo)
+  if (index !== -1) {
+    favoritos.value.splice(index, 1)
+  } else {
+    favoritos.value.push(livro)
+  }
+}
+const livrosFiltrados = computed(() => livros.value)
 </script>
 
 <template>
@@ -82,7 +92,10 @@ const livros = [
           <a href="#carrinho"><i class="fa-solid fa-cart-shopping"></i></a>
         </li>
         <li class="icon-com-barra">
-          <a href="#favoritos"><i class="fa-solid fa-heart"></i></a>
+          <a href="#favoritos">
+            <i class="fa-solid fa-heart"></i>
+            <span v-if="contadorFavoritos > 0" class="contador">{{ contadorFavoritos }}</span>
+          </a>
         </li>
         <li>
           <a href="#perfil"><i class="fa-solid fa-user"></i></a>
@@ -93,95 +106,111 @@ const livros = [
   </div>
   <main>
     <section class="autor-abril">
-        <div class="holly">
-          <div>
-            <p><span>Autora de Abril</span></p>
+      <div class="holly">
+        <div>
+          <p><span>Autora de Abril</span></p>
+        </div>
+        <h1>Holly Black</h1>
+        <p>
+          Holly Black é uma escritora e editora norte-americana mais conhecida por sua ficção
+          infantil e juvenil. Seu trabalho inclui a série "O Povo do Ar", best-seller do The New
+          York Times para jovens adultos.
+        </p>
+        <button @click="navigateToBookPage">Acessar página do livro</button>
+      </div>
+      <div class="img">
+        <img src="https://i.ibb.co/RTy0nbh0/image-removebg-preview.png" alt="principe-cruel" />
+        <p>*within the stock limit</p>
+      </div>
+    </section>
+    <!-- conteudo -->
+    <section class="livros-section">
+      <div class="botoes-informacoes">
+        <div class="item-info">
+          <i class="fas fa-truck"></i>
+          <span>Frete grátis para SC</span>
+        </div>
+        <div class="item-info">
+          <i class="fas fa-star"></i>
+          <span>Livros recomendados</span>
+        </div>
+        <div class="item-info">
+          <i class="fas fa-book"></i>
+          <span>Mais vendidos</span>
+        </div>
+      </div>
+      <!-- Lançamentos -->
+      <div class="container">
+        <h2 class="titulo-secao">Lançamentos</h2>
+        <div class="livros-grid">
+          <div v-for="(livro, v) in livros" :key="v" class="card-livro">
+            <div class="livro-capa">
+              <img :src="livro.imagem" alt="Capa do livro" />
+            </div>
+            <h3 class="livro-titulo">{{ livro.titulo }}</h3>
+            <p class="livro-autor">{{ livro.autor }}</p>
+            <span class="icone-coracao" @click="toggleFavorito(livro)">
+              <i
+                :class="
+                  favoritos.some((f) => f.titulo === livro.titulo) ? 'fas fa-heart' : 'far fa-heart'
+                "
+              ></i>
+            </span>
+            <div class="acoes">
+              <button class="btn-comprar"><i class="fas fa-shopping-cart"></i> Comprar</button>
+            </div>
           </div>
-          <h1>Holly Black</h1>
-          <p>Holly Black é uma escritora e editora norte-americana mais conhecida por sua ficção infantil e juvenil. Seu trabalho inclui a série "O Povo do Ar", best-seller do The New York Times para jovens adultos.</p>
-          <button @click="navigateToBookPage">Acessar página do livro</button>
         </div>
-        <div class="img">
-          <img src="https://i.ibb.co/RTy0nbh0/image-removebg-preview.png" alt="principe-cruel">
-          <p>*within the stock limit</p>
-        </div>
-      </section>
-  <!-- conteudo -->
-  <section class="livros-section">
-    <div class="botoes-informacoes">
-      <div class="item-info">
-        <i class="fas fa-truck"></i>
-        <span>Frete grátis para SC</span>
       </div>
-      <div class="item-info">
-        <i class="fas fa-star"></i>
-        <span>Livros recomendados</span>
-      </div>
-      <div class="item-info">
-        <i class="fas fa-book"></i>
-        <span>Mais vendidos</span>
+    </section>
+
+    <!--Favoritos-->
+    <div>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <LivroCard
+          v-for="livro in livrosFiltrados"
+          :key="livro.titulo"
+          :livro="livro"
+          :favoritado="favoritos.some((f) => f.titulo === livro.titulo)"
+          @toggle-favorito="toggleFavorito"
+        />
       </div>
     </div>
-    <!-- Lançamentos -->
-    <div class="container">
-      <h2 class="titulo-secao">Lançamentos</h2>
-      <div class="livros-grid">
-        <div v-for="(livro, v) in livros" :key="v" class="card-livro">
-          <div class="livro-capa">
-            <img :src="livro.imagem" alt="Capa do livro" />
-          </div>
-          <h3 class="livro-titulo">{{ livro.titulo }}</h3>
-          <p class="livro-autor">{{ livro.autor }}</p>
-          <div class="preco-favorito">
-            <p class="livro-preco">{{ livro.preco }}</p>
-            <span class="icone-coracao"><i class="far fa-heart"></i></span>
-          </div>
-          <div class="acoes">
-            <button class="btn-comprar"><i class="fas fa-shopping-cart"></i> Comprar</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
   </main>
-    <!-- Rodapé -->
-    <footer class="rodape">
-      <div class="container-rodape">
-        <div class="redes-sociais">
-          <a href="index.html" class="logo">IFBooks</a>
-          <div class="icones">
-            <i class="fab fa-facebook"></i>
-            <i class="fab fa-instagram"></i>
-            <i class="fab fa-twitter"></i>
-          </div>
-        </div>
-        <div class="contatos">
-          <p>Contatos</p>
-          <p><i class="fas fa-phone-alt"></i> +55 47 99999-9999</p>
-          <p><i class="fas fa-envelope"></i> contato@ebooks.com</p>
-          <p><i class="fas fa-map-marker-alt"></i> Rua da Leitura, 123 - SC</p>
-          <div class="pagamento">
-            <img
-              src="https://i.ibb.co/ccfhYRbJ/paipal-1.png"
-              alt="PayPal"
-              class="icone-cartao"
-            />
-            <img
-              src="https://i.ibb.co/ybp3bbW/Master-Card-Logo-1979-1.png"
-              alt="Mastercard"
-              class="icone-cartao"
-            />
-            <img
-              src="https://i.ibb.co/bgpdtpx0/VISA-card-logo-1.png"
-              alt="Visa"
-              class="icone-cartao"
-            />
-          </div>
+  <!-- Rodapé -->
+  <footer class="rodape">
+    <div class="container-rodape">
+      <div class="redes-sociais">
+        <a href="index.html" class="logo">IFBooks</a>
+        <div class="icones">
+          <i class="fab fa-facebook"></i>
+          <i class="fab fa-instagram"></i>
+          <i class="fab fa-twitter"></i>
         </div>
       </div>
-      <hr class="linha-divisoria" />
-      <p class="copyright">© Alguns direitos reservados | IFBooks 2025</p>
-    </footer>
+      <div class="contatos">
+        <p>Contatos</p>
+        <p><i class="fas fa-phone-alt"></i> +55 47 99999-9999</p>
+        <p><i class="fas fa-envelope"></i> contato@ebooks.com</p>
+        <p><i class="fas fa-map-marker-alt"></i> Rua da Leitura, 123 - SC</p>
+        <div class="pagamento">
+          <img src="https://i.ibb.co/ccfhYRbJ/paipal-1.png" alt="PayPal" class="icone-cartao" />
+          <img
+            src="https://i.ibb.co/ybp3bbW/Master-Card-Logo-1979-1.png"
+            alt="Mastercard"
+            class="icone-cartao"
+          />
+          <img
+            src="https://i.ibb.co/bgpdtpx0/VISA-card-logo-1.png"
+            alt="Visa"
+            class="icone-cartao"
+          />
+        </div>
+      </div>
+    </div>
+    <hr class="linha-divisoria" />
+    <p class="copyright">© Alguns direitos reservados | IFBooks 2025</p>
+  </footer>
 </template>
 
 <style scoped>
@@ -198,7 +227,7 @@ body {
 }
 .autor-abril .holly,
 .autor-abril .img {
-  margin: 0; 
+  margin: 0;
   width: 40%;
   max-width: 400px;
 }
@@ -206,11 +235,11 @@ body {
 .autor-abril h1 {
   font-weight: bold;
   font-size: xxx-large;
-  color: #382C2C;
+  color: #382c2c;
 }
 
 .autor-abril p {
-  color: #4D4C4C;
+  color: #4d4c4c;
 }
 
 .autor-abril div.holly {
@@ -218,10 +247,9 @@ body {
   width: 45%;
 }
 
-
 .autor-abril div.holly div {
   width: 130px;
-  border: 2px solid #4E1EB5;
+  border: 2px solid #4e1eb5;
   padding: 7px 0 7px 0;
   margin: 2rem 0;
   border-radius: 8px;
@@ -230,7 +258,7 @@ body {
 }
 
 .autor-abril div.holly span {
-  color: #4E1EB5;
+  color: #4e1eb5;
 }
 
 .autor-abril div.holly p {
@@ -239,7 +267,7 @@ body {
 
 .autor-abril button {
   font-family: 'Poppins', sans-serif;
-  background-color: #4E1EB5;
+  background-color: #4e1eb5;
   color: white;
   border: none;
   border-radius: 4px;
@@ -254,7 +282,6 @@ body {
   background-color: #3b0ca0;
 }
 
-
 .autor-abril div.img {
   margin: 0 5vw;
   width: 45%;
@@ -267,7 +294,7 @@ body {
 
 .autor-abril div.img p {
   font-size: 15px;
-  color: #4D4C4C;
+  color: #4d4c4c;
   margin-top: 8px;
   text-align: right;
 }
@@ -388,6 +415,17 @@ nav ul li a {
   width: 1px;
   height: 35px;
   background-color: #4e1eb5;
+}
+
+.contador {
+  position: absolute;
+  top: -5px;
+  right: -10px;
+  background-color: red;
+  color: white;
+  font-size: 12px;
+  padding: 2px 6px;
+  border-radius: 50%;
 }
 
 .slogan {
@@ -513,6 +551,16 @@ nav ul li a {
   font-size: 18px;
   color: #4e1eb5;
 }
+
+.remover-favorito {
+  background-color: #ff6b6b;
+  border: none;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
 /* rodapé */
 .rodape {
   margin: 10vw 0 0 0;

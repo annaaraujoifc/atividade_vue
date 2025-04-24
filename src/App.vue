@@ -193,7 +193,6 @@ const totalCarrinho = computed(() =>
     <!-- CARRINHO -->
   <section v-if="paginaAtual === 'carrinho'" class="pagina-carrinho">
     <h1>Carrinho</h1>
-
     <div v-if="carrinho.length === 0">
       <p>Seu carrinho está vazio.</p>
     </div>
@@ -641,7 +640,7 @@ nav ul li a {
 .imagem-livro-carrinho {
   width: 100px; 
   height: auto; 
-  border-radius: 8px; /* opcional: cantos arredondados */
+  border-radius: 8px; 
   margin-right: 6px; 
 }
 

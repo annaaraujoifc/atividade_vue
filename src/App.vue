@@ -134,7 +134,7 @@ const totalComDesconto = computed(() => {
       </ul>
       <div class="barra-pesquisa">
         <input type="text" placeholder="Pesquisar" v-model="searchQuery" />
-        <i class="fa-solid fa-magnifying-glass"></i>
+        <span class="fa-solid fa-magnifying-glass"></span>
       </div>
       <ul class="apos-barra">
         <li><a href="#termo">Termo</a></li>
@@ -143,14 +143,14 @@ const totalComDesconto = computed(() => {
         <li><a href="#devolucoes">Devoluções</a></li>
         <li class="icon-com-barra">
           <a href="#" @click.prevent="paginaAtual = 'carrinho'">
-            <i class="fa-solid fa-cart-plus"></i>
+            <span class="fa-solid fa-cart-plus"></span>
           </a>
         </li>
         <li class="icon-com-barra">
-          <a href="#favoritos"><i class="fa-solid fa-heart"></i></a>
+          <a href="#favoritos"><span class="fa-solid fa-heart"></span></a>
         </li>
         <li>
-          <a href="#perfil"><i class="fa-solid fa-user"></i></a>
+          <a href="#perfil"><span class="fa-solid fa-user"></span></a>
         </li>
       </ul>
     </nav>
@@ -158,7 +158,7 @@ const totalComDesconto = computed(() => {
   </header>
 
   <main>
-    <!-- HOME -->
+    <!--HOME-->
     <section v-if="paginaAtual === 'home'">
       <section class="autor-abril" v-if="!searchQuery">
         <div class="holly">
@@ -204,11 +204,11 @@ const totalComDesconto = computed(() => {
               <p class="livro-autor">{{ livro.autor }}</p>
               <div class="preco-favorito">
                 <p class="livro-preco">R$ {{ livro.preco }}</p>
-                <span class="icone-coracao"><i class="far fa-heart"></i></span>
+                <span class="icone-coracao"><span class="far fa-heart"></span></span>
               </div>
               <div class="acoes">
                 <button class="btn-comprar" @click="adicionarAoCarrinho(livro)">
-                  <i class="fas fa-shopping-cart"></i> Comprar
+                  <span class="fas fa-shopping-cart"></span> Comprar
                 </button>
               </div>
             </div>
@@ -249,7 +249,7 @@ const totalComDesconto = computed(() => {
           <span>{{ item.quantidade }}</span>
           <button @click="aumentarQuantidade(item)" class="btn-quantidade">+</button>
         </div>
-        <button @click="removerDoCarrinho(item.id)" class="btn-remover">X</button>
+        <button @click="removerDoCarrinho(item.id)" class="btn-remover"><span class="fa-solid fa-trash"></span></button>
       </div>
       <!--SUBTOTAL-->
       <div class="coluna-preco">
@@ -281,7 +281,7 @@ const totalComDesconto = computed(() => {
   </div>
 </section>
   </main>
-    <!-- Rodapé -->
+    <!--RODAPÉ-->
     <footer class="rodape">
       <div class="container-rodape">
         <div class="redes-sociais">
@@ -294,9 +294,9 @@ const totalComDesconto = computed(() => {
         </div>
         <div class="contatos">
           <p>Contatos</p>
-          <p><i class="fas fa-phone-alt"></i> +55 47 99999-9999</p>
-          <p><i class="fas fa-envelope"></i> contato@ebooks.com</p>
-          <p><i class="fas fa-map-marker-alt"></i> Rua da Leitura, 123 - SC</p>
+          <p><span class="fas fa-phone-alt"></span> +55 47 99999-9999</p>
+          <p><span class="fas fa-envelope"></span> contato@ebooks.com</p>
+          <p><span class="fas fa-map-marker-alt"></span> Rua da Leitura, 123 - SC</p>
           <div class="pagamento">
             <img
               src="https://i.ibb.co/ccfhYRbJ/paipal-1.png"
@@ -322,6 +322,127 @@ const totalComDesconto = computed(() => {
 </template>
 
 <style scoped>
+/*MENU*/
+header {
+  font-family: 'Poppins', sans-serif;
+}
+.icon-com-barra {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding-right: 5px;
+  margin-right: -10px;
+}
+.icon-com-barra::after {
+  content: '';
+  position: absolute;
+  top: 10px;
+  right: 0;
+  width: 1px;
+  height: 22px;
+  background-color: #4e1eb5;
+}
+.icon-com-barra a span,
+.apos-barra li a span {
+  color: #4e1eb5;
+}
+.apos-barra li {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.apos-barra li a {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  font-size: 15px;
+  padding: 0 10px;
+  color: #7b7881;
+}
+.apos-barra li a:hover {
+  color: #4e1eb5;
+}
+.barra-pesquisa {
+  display: flex;
+  align-items: center;
+  background-color: #f0f0f0;
+  padding: 3px 15px;
+  margin: 0.7vw 5vw 0 5vw;
+}
+.barra-pesquisa input {
+  border: none;
+  outline: none;
+  background: transparent;
+  color: #4e1eb5;
+  font-size: 14px;
+  padding: 5px 0 5px 0;
+  flex-grow: 1;
+}
+.barra-pesquisa span {
+  color: #4e1eb5;
+  font-size: 18px;
+  margin-left: 70px;
+  cursor: pointer;
+}
+nav {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  margin: 0.5vw 0 0 0;
+}
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+}
+nav ul li {
+  padding: 1rem 1rem 0 0;
+}
+nav ul li a {
+  text-decoration: none;
+}
+.logo {
+  font-size: 18px;
+  color: #231f2d;
+}
+.antes-barra {
+  align-items: center;
+  text-align: center;
+}
+.antes-barra li:first-child {
+  position: relative;
+}
+.antes-barra li:first-child::after {
+  content: '';
+  position: absolute;
+  top: 10px;
+  right: 6px;
+  width: 1px;
+  height: 35px;
+  background-color: #4e1eb5;
+}
+.slogan {
+  color: #4e1eb5;
+  font-size: 14px;
+  line-height: 1;
+  margin-left: -55px;
+}
+.apos-barra a {
+  color: #4e1eb5;
+}
+.linha-roxa {
+  width: 100%;
+  height: 1px;
+  background-color: #4e1eb5;
+  margin-top: 15px;
+}
+
+/*CLASS AUTOR-ABRIL*/
 .autor-abril {
   display: flex;
   justify-content: center;
@@ -398,125 +519,6 @@ const totalComDesconto = computed(() => {
   margin-top: 8px;
   text-align: right;
 }
-/*MENU*/
-header {
-  font-family: 'Poppins', sans-serif;
-}
-.icon-com-barra {
-  position: relative;
-  display: flex;
-  align-items: center;
-  height: 100%;
-  padding-right: 5px;
-  margin-right: -10px;
-}
-.icon-com-barra::after {
-  content: '';
-  position: absolute;
-  top: 10px;
-  right: 0;
-  width: 1px;
-  height: 22px;
-  background-color: #4e1eb5;
-}
-.icon-com-barra a i,
-.apos-barra li a i {
-  color: #4e1eb5;
-}
-.apos-barra li {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.apos-barra li a {
-  display: flex;
-  align-items: center;
-  text-decoration: none;
-  font-size: 15px;
-  padding: 0 10px;
-  color: #7b7881;
-}
-.apos-barra li a:hover {
-  color: #4e1eb5;
-}
-.barra-pesquisa {
-  display: flex;
-  align-items: center;
-  background-color: #f0f0f0;
-  padding: 3px 15px;
-  margin: 0.7vw 5vw 0 5vw;
-}
-.barra-pesquisa input {
-  border: none;
-  outline: none;
-  background: transparent;
-  color: #4e1eb5;
-  font-size: 14px;
-  padding: 5px 0 5px 0;
-  flex-grow: 1;
-}
-.barra-pesquisa i {
-  color: #4e1eb5;
-  font-size: 18px;
-  margin-left: 70px;
-  cursor: pointer;
-}
-nav {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  flex-wrap: wrap;
-  margin: 0.5vw 0 0 0;
-}
-nav ul {
-  list-style: none;
-  display: flex;
-  gap: 20px;
-  align-items: center;
-  padding: 0;
-  margin: 0;
-}
-nav ul li {
-  padding: 1rem 1rem 0 0;
-}
-nav ul li a {
-  text-decoration: none;
-}
-.logo {
-  font-size: 18px;
-  color: #231f2d;
-}
-.antes-barra {
-  align-items: center;
-  text-align: center;
-}
-.antes-barra li:first-child {
-  position: relative;
-}
-.antes-barra li:first-child::after {
-  content: '';
-  position: absolute;
-  top: 10px;
-  right: 6px;
-  width: 1px;
-  height: 35px;
-  background-color: #4e1eb5;
-}
-.slogan {
-  color: #4e1eb5;
-  font-size: 14px;
-  line-height: 1;
-  margin-left: -55px;
-}
-.apos-barra a {
-  color: #4e1eb5;
-}
-.linha-roxa {
-  width: 100%;
-  height: 1px;
-  background-color: #4e1eb5;
-  margin-top: 15px;
-}
 
 /*CONTEÚDO E LANÇAMENTOS*/
 .livros-section {
@@ -543,7 +545,7 @@ nav ul li a {
   font-weight: 700;
   font-size: 16px;
 }
-.item-info i {
+.item-info span {
   font-size: 20px;
   font-weight: 700;
 }
@@ -692,6 +694,7 @@ nav ul li a {
 .btn-quantidade {
   border: none;
   background-color: white;
+  cursor: pointer;
 }
 .btn-remover {
   background-color: transparent;
@@ -784,6 +787,7 @@ nav ul li a {
 .cupom button:hover {
   background-color: #3b0ca0;
 }
+
 /*RODAPÉ*/
 .rodape {
   margin: 10vw 0 0 0;
@@ -809,7 +813,7 @@ nav ul li a {
   display: flex;
   gap: 10px;
 }
-.icones i {
+.icones span {
   width: 20px;
   height: 20px;
   background-color: white;
@@ -833,7 +837,7 @@ nav ul li a {
   align-items: center;
   gap: 8px;
 }
-.contatos i {
+.contatos span {
   font-size: 14px;
   color: white;
 }

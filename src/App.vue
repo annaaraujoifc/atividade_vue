@@ -2,7 +2,6 @@
 import { ref, computed } from 'vue'
 
 const paginaAtual = ref('home')
-const termoBusca = ref('')
 const carrinho = ref([])
 
 const livros = [
@@ -64,6 +63,13 @@ const livros = [
   },
 ]
 
+const searchQuery = ref("");
+
+const filteredBooks = computed(() => {
+  const query = searchQuery.value.toLowerCase();
+  return livros.filter(book => book.titulo.toLowerCase().includes(query)); 
+});
+
 function adicionarAoCarrinho(produto) {
   const existente = carrinho.value.find(item => item.id === produto.id)
   if (existente) {
@@ -73,16 +79,53 @@ function adicionarAoCarrinho(produto) {
   }
 }
 
-const totalCarrinho = computed(() =>
-  carrinho.value.reduce((total, item) => total + item.preco * item.quantidade, 0).toFixed(2)
-)
+function removerDoCarrinho(id) {
+  carrinho.value = carrinho.value.filter(item => item.id !== id)
+}
+
+function aumentarQuantidade(item) {
+  item.quantidade += 1
+}
+
+function diminuirQuantidade(item) {
+  if (item.quantidade > 1) {
+    item.quantidade -= 1
+  } else {
+    removerDoCarrinho(item)
+  }
+}
+
+const totalCarrinho = computed(() => {
+  return carrinho.value.reduce((total, item) => {
+    return total + item.preco * item.quantidade
+  }, 0)
+})
+
+const codigoCupom = ref('')
+const cupomAtivo = ref(false)
+const mensagemCupom = ref('')
+
+function aplicarCupom() {
+  if (codigoCupom.value.toLowerCase() === 'desconto10' && !cupomAtivo.value) {
+    cupomAtivo.value = true
+    mensagemCupom.value = 'Cupom aplicado com sucesso!'
+  } else if (cupomAtivo.value) {
+    mensagemCupom.value = 'Cupom já foi usado.'
+  } else {
+    mensagemCupom.value = 'Cupom inválido.'
+  }
+}
+
+const totalComDesconto = computed(() => {
+  return cupomAtivo.value ? totalCarrinho.value * 0.9 : totalCarrinho.value
+})
 </script>
 
 <template>
   <header class="menu">
     <nav>
       <ul class="antes-barra">
-        <li><a href="#ifbooks" class="logo">IFbooks</a></li>
+        <li><a href="index.html" class="logo">IFbooks</a></li>
         <li class="barrinha"></li>
         <li class="slogan">
           Aprecie a <br />
@@ -90,8 +133,8 @@ const totalCarrinho = computed(() =>
         </li>
       </ul>
       <div class="barra-pesquisa">
-        <input type="text" v-model="termoBusca" placeholder="Pesquisar" />
-        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" placeholder="Pesquisar" v-model="searchQuery" />
+        <span class="fa-solid fa-magnifying-glass"></span>
       </div>
       <ul class="apos-barra">
         <li><a href="#termo">Termo</a></li>
@@ -100,14 +143,14 @@ const totalCarrinho = computed(() =>
         <li><a href="#devolucoes">Devoluções</a></li>
         <li class="icon-com-barra">
           <a href="#" @click.prevent="paginaAtual = 'carrinho'">
-            <i class="fa-solid fa-cart-shopping"></i>
+            <span class="fa-solid fa-cart-plus"></span>
           </a>
         </li>
         <li class="icon-com-barra">
-          <a href="#favoritos"><i class="fa-solid fa-heart"></i></a>
+          <a href="#favoritos"><span class="fa-solid fa-heart"></span></a>
         </li>
         <li>
-          <a href="#perfil"><i class="fa-solid fa-user"></i></a>
+          <a href="#perfil"><span class="fa-solid fa-user"></span></a>
         </li>
       </ul>
     </nav>
@@ -115,9 +158,9 @@ const totalCarrinho = computed(() =>
   </header>
 
   <main>
-    <!-- HOME -->
+    <!--HOME-->
     <section v-if="paginaAtual === 'home'">
-      <section class="autor-abril">
+      <section class="autor-abril" v-if="!searchQuery">
         <div class="holly">
           <div>
             <p><span>Autora de Abril</span></p>
@@ -135,7 +178,7 @@ const totalCarrinho = computed(() =>
       </section>
 
       <section class="livros-section">
-        <div class="botoes-informacoes">
+        <div class="botoes-informacoes" v-if="!searchQuery">
           <div class="item-info">
             <i class="fas fa-truck"></i>
             <span>Frete grátis para SC</span>
@@ -153,7 +196,7 @@ const totalCarrinho = computed(() =>
         <div class="container">
           <h2 class="titulo-secao">Lançamentos</h2>
           <div class="livros-grid">
-            <div v-for="livro in livros" :key="livro.id" class="card-livro">
+            <div v-for="livro in filteredBooks" :key="livro.id" class="card-livro">
               <div class="livro-capa">
                 <img :src="livro.imagem" alt="Capa do livro" />
               </div>
@@ -161,11 +204,11 @@ const totalCarrinho = computed(() =>
               <p class="livro-autor">{{ livro.autor }}</p>
               <div class="preco-favorito">
                 <p class="livro-preco">R$ {{ livro.preco }}</p>
-                <span class="icone-coracao"><i class="far fa-heart"></i></span>
+                <span class="icone-coracao"><span class="far fa-heart"></span></span>
               </div>
               <div class="acoes">
                 <button class="btn-comprar" @click="adicionarAoCarrinho(livro)">
-                  <i class="fas fa-shopping-cart"></i> Comprar
+                  <span class="fas fa-shopping-cart"></span> Comprar
                 </button>
               </div>
             </div>
@@ -174,25 +217,71 @@ const totalCarrinho = computed(() =>
       </section>
     </section>
 
-    <!-- CARRINHO -->
-    <section v-if="paginaAtual === 'carrinho'" class="pagina-carrinho">
-      <h1>Carrinho</h1>
-      <div v-if="carrinho.length === 0">
-        <p>Seu carrinho está vazio.</p>
-      </div>
-      <div v-else>
-        <div v-for="item in carrinho" :key="item.id" class="item-carrinho">
-          <p><strong>{{ item.titulo }}</strong></p>
-          <input type="number" v-model.number="item.quantidade" min="1" />
-          <p>Subtotal: R$ {{ (item.preco * item.quantidade).toFixed(2) }}</p>
-        </div>
-        <hr>
-        <p class="total"><strong>Total: R$ {{ totalCarrinho }}</strong></p>
-      </div>
+    <!--CARRINHO-->
+  <section v-if="paginaAtual === 'carrinho'" class="pagina-carrinho">
+    <h1>Carrinho</h1>
+    <div v-if="carrinho.length === 0">
+      <p>Seu carrinho está vazio.</p>
       <button @click="paginaAtual = 'home'" class="btn-voltar">Voltar para loja</button>
-    </section>
+    </div>
+
+    <div v-else>
+        <div class="titulos">
+          <h2>Título</h2>
+          <h2>Quantidade</h2>
+          <h2>Subtotal</h2>
+        </div>
+
+  <div v-for="item in carrinho" :key="item.id" class="item-carrinho">
+    <!--TÍTULO-->
+      <div class="coluna">
+        <img :src="item.imagem" alt="Capa do livro" class="imagem-livro-carrinho" />
+        <div>
+          <h3 class="titulo-livro">{{ item.titulo }}</h3>
+          <p class="autor-livro">{{ item.autor }}</p>
+          <p><span>R$ {{ item.preco.toFixed(2) }}</span></p>
+        </div>
+      </div>
+    <!--QUANTIDADE-->
+      <div class="coluna-qtd">
+        <div class="quantidade-area">
+          <button @click="diminuirQuantidade(item)" class="btn-quantidade">-</button>
+          <span>{{ item.quantidade }}</span>
+          <button @click="aumentarQuantidade(item)" class="btn-quantidade">+</button>
+        </div>
+        <button @click="removerDoCarrinho(item.id)" class="btn-remover"><span class="fa-solid fa-trash"></span></button>
+      </div>
+      <!--SUBTOTAL-->
+      <div class="coluna-preco">
+        <p><strong>R$ {{ (item.preco * item.quantidade).toFixed(2) }}</strong></p>
+      </div>
+    </div>
+    <button @click="paginaAtual = 'home'" class="btn-voltar">Voltar para loja</button>
+    <div class="cupom">
+      <input type="text" v-model="codigoCupom" placeholder="Código do cupom" />
+      <button @click="aplicarCupom">Inserir Cupom</button>
+    </div>
+      <p v-if="mensagemCupom">{{ mensagemCupom }}</p> 
+      <ul class="total">
+        <li><strong>Total da Compra</strong></li>
+        <li class="line">
+          <p>Produtos:</p>
+          <p>R$ {{ totalCarrinho.toFixed(2) }}</p>
+        </li>
+        <li class="line">
+          <p>Frete:</p>
+          <p>Grátis</p>
+        </li>
+        <li class="totalDesconto">
+          <p>Total:</p>
+          <p>R${{ totalComDesconto.toFixed(2) }}</p>
+        </li>
+        <button>Ir para o pagamento</button>
+      </ul>
+  </div>
+</section>
   </main>
-    <!-- Rodapé -->
+    <!--RODAPÉ-->
     <footer class="rodape">
       <div class="container-rodape">
         <div class="redes-sociais">
@@ -205,9 +294,9 @@ const totalCarrinho = computed(() =>
         </div>
         <div class="contatos">
           <p>Contatos</p>
-          <p><i class="fas fa-phone-alt"></i> +55 47 99999-9999</p>
-          <p><i class="fas fa-envelope"></i> contato@ebooks.com</p>
-          <p><i class="fas fa-map-marker-alt"></i> Rua da Leitura, 123 - SC</p>
+          <p><span class="fas fa-phone-alt"></span> +55 47 99999-9999</p>
+          <p><span class="fas fa-envelope"></span> contato@ebooks.com</p>
+          <p><span class="fas fa-map-marker-alt"></span> Rua da Leitura, 123 - SC</p>
           <div class="pagamento">
             <img
               src="https://i.ibb.co/ccfhYRbJ/paipal-1.png"
@@ -233,10 +322,127 @@ const totalCarrinho = computed(() =>
 </template>
 
 <style scoped>
-body {
+/*MENU*/
+header {
   font-family: 'Poppins', sans-serif;
 }
+.icon-com-barra {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding-right: 5px;
+  margin-right: -10px;
+}
+.icon-com-barra::after {
+  content: '';
+  position: absolute;
+  top: 10px;
+  right: 0;
+  width: 1px;
+  height: 22px;
+  background-color: #4e1eb5;
+}
+.icon-com-barra a span,
+.apos-barra li a span {
+  color: #4e1eb5;
+}
+.apos-barra li {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.apos-barra li a {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  font-size: 15px;
+  padding: 0 10px;
+  color: #7b7881;
+}
+.apos-barra li a:hover {
+  color: #4e1eb5;
+}
+.barra-pesquisa {
+  display: flex;
+  align-items: center;
+  background-color: #f0f0f0;
+  padding: 3px 15px;
+  margin: 0.7vw 5vw 0 5vw;
+}
+.barra-pesquisa input {
+  border: none;
+  outline: none;
+  background: transparent;
+  color: #4e1eb5;
+  font-size: 14px;
+  padding: 5px 0 5px 0;
+  flex-grow: 1;
+}
+.barra-pesquisa span {
+  color: #4e1eb5;
+  font-size: 18px;
+  margin-left: 70px;
+  cursor: pointer;
+}
+nav {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  margin: 0.5vw 0 0 0;
+}
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+}
+nav ul li {
+  padding: 1rem 1rem 0 0;
+}
+nav ul li a {
+  text-decoration: none;
+}
+.logo {
+  font-size: 18px;
+  color: #231f2d;
+}
+.antes-barra {
+  align-items: center;
+  text-align: center;
+}
+.antes-barra li:first-child {
+  position: relative;
+}
+.antes-barra li:first-child::after {
+  content: '';
+  position: absolute;
+  top: 10px;
+  right: 6px;
+  width: 1px;
+  height: 35px;
+  background-color: #4e1eb5;
+}
+.slogan {
+  color: #4e1eb5;
+  font-size: 14px;
+  line-height: 1;
+  margin-left: -55px;
+}
+.apos-barra a {
+  color: #4e1eb5;
+}
+.linha-roxa {
+  width: 100%;
+  height: 1px;
+  background-color: #4e1eb5;
+  margin-top: 15px;
+}
 
+/*CLASS AUTOR-ABRIL*/
 .autor-abril {
   display: flex;
   justify-content: center;
@@ -244,6 +450,7 @@ body {
   gap: 5rem;
   padding: 4rem 2rem;
   margin-bottom: 2px solid #4E1EB5;
+  font-family: 'Poppins', sans-serif;
 }
 .autor-abril .holly,
 .autor-abril .img {
@@ -257,17 +464,13 @@ body {
   font-size: xxx-large;
   color: #382C2C;
 }
-
 .autor-abril p {
   color: #4D4C4C;
 }
-
 .autor-abril div.holly {
   margin: 0 5vw;
   width: 45%;
 }
-
-
 .autor-abril div.holly div {
   width: 130px;
   border: 2px solid #4E1EB5;
@@ -277,11 +480,9 @@ body {
   text-align: center;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
-
 .autor-abril div.holly span {
   color: #4E1EB5;
 }
-
 #povo-do-ar {
   color: #4E1EB5;
   font-weight: bold;
@@ -289,7 +490,6 @@ body {
 .autor-abril div.holly p {
   max-width: 500px;
 }
-
 .autor-abril button {
   font-family: 'Poppins', sans-serif;
   background-color: #4E1EB5;
@@ -302,22 +502,17 @@ body {
   cursor: pointer;
   transition: background-color 0.3s;
 }
-
 .autor-abril button:hover {
   background-color: #3b0ca0;
 }
-
-
 .autor-abril div.img {
   margin: 0 5vw;
   width: 45%;
 }
-
 .autor-abril div.img img {
   width: 440px;
   height: auto;
 }
-
 .autor-abril div.img p {
   font-size: 15px;
   color: #4D4C4C;
@@ -325,160 +520,23 @@ body {
   text-align: right;
 }
 
-/* css menu */
-.icon-com-barra {
-  position: relative;
-  display: flex;
-  align-items: center;
-  height: 100%;
-  padding-right: 5px;
-  margin-right: -10px;
-}
-
-.icon-com-barra::after {
-  content: '';
-  position: absolute;
-  top: 10px;
-  right: 0;
-  width: 1px;
-  height: 22px;
-  background-color: #4e1eb5;
-}
-
-.icon-com-barra a i,
-.apos-barra li a i {
-  color: #4e1eb5;
-}
-
-.apos-barra li {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.apos-barra li a {
-  display: flex;
-  align-items: center;
-  text-decoration: none;
-  font-size: 15px;
-  padding: 0 10px;
-  color: #7b7881;
-}
-
-.apos-barra li a:hover {
-  color: #4e1eb5;
-}
-
-.barra-pesquisa {
-  display: flex;
-  align-items: center;
-  background-color: #f0f0f0;
-  padding: 3px 15px;
-  margin: 0.7vw 5vw 0 5vw;
-}
-
-.barra-pesquisa input {
-  border: none;
-  outline: none;
-  background: transparent;
-  color: #4e1eb5;
-  font-size: 14px;
-  padding: 5px 0 5px 0;
-  flex-grow: 1;
-}
-
-.barra-pesquisa i {
-  color: #4e1eb5;
-  font-size: 18px;
-  margin-left: 70px;
-  cursor: pointer;
-}
-
-nav {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  flex-wrap: wrap;
-  margin: 0.5vw 0 0 0;
-}
-
-nav ul {
-  list-style: none;
-  display: flex;
-  gap: 20px;
-  align-items: center;
-  padding: 0;
-  margin: 0;
-}
-
-nav ul li {
-  padding: 1rem 1rem 0 0;
-}
-
-nav ul li a {
-  text-decoration: none;
-}
-
-.logo {
-  font-size: 18px;
-  color: #231f2d;
-}
-
-.antes-barra {
-  align-items: center;
-  text-align: center;
-}
-
-.antes-barra li:first-child {
-  position: relative;
-}
-
-.antes-barra li:first-child::after {
-  content: '';
-  position: absolute;
-  top: 10px;
-  right: 6px;
-  width: 1px;
-  height: 35px;
-  background-color: #4e1eb5;
-}
-
-.slogan {
-  color: #4e1eb5;
-  font-size: 14px;
-  line-height: 1;
-  margin-left: -55px;
-}
-
-.apos-barra a {
-  color: #4e1eb5;
-}
-
-.linha-roxa {
-  width: 100%;
-  height: 1px;
-  background-color: #4e1eb5;
-  margin-top: 15px;
-}
-
-/* css conteudo e lançamentos */
+/*CONTEÚDO E LANÇAMENTOS*/
 .livros-section {
   background-color: #fff;
+  font-family: 'Poppins', sans-serif;
+  border-top: 2px solid #4e1eb5 ;
 }
-
 .botoes-informacoes {
   display: flex;
   justify-content: space-around;
   padding: 32px 11vw;
-  border-bottom: 1px solid #ccc;
   background: #fff;
   font-weight: 700;
+  border-bottom: 2px solid #4e1eb5;
 }
-
 .botoes-informacoes span {
   font-weight: 600;
 }
-
 .item-info {
   display: flex;
   align-items: center;
@@ -487,13 +545,10 @@ nav ul li a {
   font-weight: 700;
   font-size: 16px;
 }
-
-.item-info i {
+.item-info span {
   font-size: 20px;
   font-weight: 700;
 }
-
-/* Lançamentos */
 .container {
   max-width: 1200px;
   margin: 0 auto;
@@ -562,16 +617,184 @@ nav ul li a {
   align-items: center;
   gap: 8px;
 }
+.btn-comprar:hover {
+  background-color: #3b0ca0;
+}
 .icone-coracao {
   font-size: 18px;
   color: #4e1eb5;
 }
-/* rodapé */
+/* CARRINHO */
+.pagina-carrinho {
+  padding: 3rem;
+  font-family: 'Poppins', sans-serif;
+  max-width: 100%;
+}
+.pagina-carrinho h1 {
+  color: #4E1EB5;
+  font-size: xx-large;
+}
+.pagina-carrinho h2 {
+  font-weight: bold;
+  font-size: x-large;
+}
+.pagina-carrinho h3 {
+  font-weight: bold;
+  font-size: large;
+}
+.titulos {
+  display: flex;
+  gap: 25vw;
+  border-bottom: 2px solid #4E1EB5;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+  width: 100%;
+  margin: 2vw 0 1.5vw 0;
+}
+.item-carrinho {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #ddd;
+  padding-bottom: 1rem;
+}
+.coluna {
+  display: flex;
+}
+.coluna span {
+  font-weight: bold;
+}
+.coluna-qtd {
+  display: flex;
+  margin: 0 15vw 0 -19vw;
+}
+.coluna-preco {
+  margin: 0 19vw 0 -19vw;
+}
+.imagem-livro-carrinho {
+  width: 100px; 
+  height: auto; 
+  border-radius: 4px; 
+  margin-right: 6px; 
+}
+.quantidade-area {
+  display: flex;
+  border: 2px solid black;
+  border-radius: 3px;
+  padding: 5px;
+}
+.quantidade-area span {
+  min-width: 30px;
+  text-align: center;
+  display: inline-block;
+  font-weight: bold;
+  font-size: 1rem;
+}
+.btn-quantidade {
+  border: none;
+  background-color: white;
+  cursor: pointer;
+}
+.btn-remover {
+  background-color: transparent;
+  color: #ff4d4d;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  font-weight: bold;
+}
+.btn-remover:hover {
+  color: #d10000;
+}
+.btn-voltar {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: white;
+  color: black;
+  border: 2px solid black;
+  border-radius: 4px;
+  cursor: pointer;
+  display: block;
+  margin-right: auto;
+  font-size: 16px;
+  font-family: 'Poppins', sans-serif;
+}
+.total {
+  margin: 2vw 65vw 0 65vw;
+  border: solid 2px black;
+  border-radius: 5px;
+  padding: 10px 20px;
+  width: 400px;
+  list-style: none;
+  color: #000000;
+}
+.total li {
+  padding: 8px 0;
+}
+.total li.line {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid black;
+}
+.total li.totalDesconto {
+  display: flex;
+  justify-content: space-between;
+}
+.total strong {
+  font-size: large;
+  font-weight: bold;
+}
+.total button {
+  font-family: 'Poppins', sans-serif;
+  background-color: #4E1EB5;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 0.75rem 1.5rem;
+  margin-top: 1.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  justify-content: center;
+}
+.total button:hover {
+  background-color: #3b0ca0;
+}
+.cupom input {
+  font-family: 'Poppins', sans-serif;
+  padding: 10px;
+  border: 1px solid black;
+  border-radius: 5px;
+  outline: none;
+  font-size: 1rem;
+  width: 200px;
+  margin: 0 1vw 0 0;
+}
+.cupom button{
+  font-family: 'Poppins', sans-serif;
+  background-color: #4E1EB5;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 0.75rem 1.5rem;
+  margin-top: 1.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  justify-content: center;
+}
+.cupom button:hover {
+  background-color: #3b0ca0;
+}
+
+/*RODAPÉ*/
 .rodape {
   margin: 10vw 0 0 0;
   background-color: #4e1eb5;
   color: white;
   font-size: 14px;
+  font-family: 'Poppins', sans-serif;
 }
 .container-rodape {
   padding: 40px 10vw 20px;
@@ -590,7 +813,7 @@ nav ul li a {
   display: flex;
   gap: 10px;
 }
-.icones i {
+.icones span {
   width: 20px;
   height: 20px;
   background-color: white;
@@ -614,7 +837,7 @@ nav ul li a {
   align-items: center;
   gap: 8px;
 }
-.contatos i {
+.contatos span {
   font-size: 14px;
   color: white;
 }

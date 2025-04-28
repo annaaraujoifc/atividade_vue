@@ -137,7 +137,7 @@ const totalComDesconto = computed(() => {
       </ul>
       <div class="barra-pesquisa">
         <input type="text" placeholder="Pesquisar" v-model="searchQuery" />
-        <span class="fa-solid fa-magnifying-glass"></span>
+        <span class="material-symbols-outlined">search</span>
       </div>
       <ul class="apos-barra">
         <li><a href="#termo">Termo</a></li>
@@ -146,7 +146,8 @@ const totalComDesconto = computed(() => {
         <li><a href="#devolucoes">Devoluções</a></li>
         <li class="icon-com-barra">
           <a href="#" @click.prevent="paginaAtual = 'carrinho'">
-            <span class="fa-solid fa-cart-plus"></span>
+            <span class="material-symbols-outlined">
+              shopping_cart</span>
           </a>
         </li>
         <li class="icon-com-barra">

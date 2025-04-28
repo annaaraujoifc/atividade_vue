@@ -106,13 +106,16 @@ const cupomAtivo = ref(false)
 const mensagemCupom = ref('')
 
 function aplicarCupom() {
-  if (codigoCupom.value.toLowerCase() === 'desconto10' && !cupomAtivo.value) {
-    cupomAtivo.value = true
-    mensagemCupom.value = 'Cupom aplicado com sucesso!'
-  } else if (cupomAtivo.value) {
+  const cupom = codigoCupom.value.toLowerCase()
+  if (cupom !== 'desconto10') {
+    mensagemCupom.value = 'Cupom inválido.'
+    return
+  }
+  if (cupomAtivo.value) {
     mensagemCupom.value = 'Cupom já foi usado.'
   } else {
-    mensagemCupom.value = 'Cupom inválido.'
+    cupomAtivo.value = true
+    mensagemCupom.value = 'Cupom aplicado com sucesso!'
   }
 }
 
@@ -195,6 +198,9 @@ const totalComDesconto = computed(() => {
 
         <div class="container">
           <h2 class="titulo-secao">Lançamentos</h2>
+          <div v-if="filteredBooks.length === 0">
+            <p style="font-size: larger;">Nenhum resultado encontrado.</p>
+          </div>
           <div class="livros-grid">
             <div v-for="livro in filteredBooks" :key="livro.id" class="card-livro">
               <div class="livro-capa">
@@ -216,7 +222,6 @@ const totalComDesconto = computed(() => {
         </div>
       </section>
     </section>
-
     <!--CARRINHO-->
   <section v-if="paginaAtual === 'carrinho'" class="pagina-carrinho">
     <h1>Carrinho</h1>
@@ -291,9 +296,9 @@ const totalComDesconto = computed(() => {
         <div class="redes-sociais">
           <a href="index.html" class="logo">IFBooks</a>
           <div class="icones">
-            <i class="fab fa-facebook"></i>
-            <i class="fab fa-instagram"></i>
-            <i class="fab fa-twitter"></i>
+            <a href="#facebook"><span class="fab fa-facebook"></span></a>
+            <a href="#instagram"><span class="fab fa-instagram"></span></a>
+            <a href="#twitter"><span class="fab fa-twitter"></span></a>
           </div>
         </div>
         <div class="contatos">
@@ -817,17 +822,11 @@ nav ul li a {
 .icones {
   display: flex;
   gap: 10px;
-}
-.icones span {
   width: 20px;
   height: 20px;
-  background-color: white;
-  color: #4e1eb5;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 16px;
-  border-radius: 2px;
+}
+.icones span {
+  color: white;
 }
 .contatos {
   text-align: left;

@@ -266,7 +266,7 @@ const totalComDesconto = computed(() => {
         <li><strong>Total da Compra</strong></li>
         <li class="line">
           <p>Produtos:</p>
-          <p>R$ {{ totalCarrinho.toFixed(2) }}</p>
+          <p>R${{ totalCarrinho.toFixed(2) }}</p>
         </li>
         <li class="line">
           <p>Frete:</p>
@@ -274,6 +274,10 @@ const totalComDesconto = computed(() => {
         </li>
         <li class="totalDesconto">
           <p>Total:</p>
+          <p>R${{ totalCarrinho.toFixed(2) }}</p>
+        </li>
+        <li class="totalDesconto" v-if="totalComDesconto < totalCarrinho">
+          <p>Total com desconto:</p>
           <p>R${{ totalComDesconto.toFixed(2) }}</p>
         </li>
         <button>Ir para o pagamento</button>
@@ -740,6 +744,7 @@ nav ul li a {
 .total li.totalDesconto {
   display: flex;
   justify-content: space-between;
+  border-bottom: 1px solid black;
 }
 .total strong {
   font-size: large;

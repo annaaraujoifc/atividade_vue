@@ -3,35 +3,38 @@ import { ref, computed } from 'vue'
 
 const paginaAtual = ref('home')
 const carrinho = ref([])
-
+const favoritos = ref([])
 const livros = [
   {
     id: 1,
-    imagem: 'https://deborahstrougo.com/wp-content/uploads/2021/12/ordem-de-leitura-da-serie-de-sangue-e-cinzas.jpg',
+    imagem:
+      'https://deborahstrougo.com/wp-content/uploads/2021/12/ordem-de-leitura-da-serie-de-sangue-e-cinzas.jpg',
     titulo: 'De Sangue e Cinzas',
     autor: 'Jennifer L. Armentrout',
-    preco: 52.90,
+    preco: 52.9,
   },
   {
     id: 2,
-    imagem: 'https://1.bp.blogspot.com/-8mPjh_CAa2g/Xfg6L1rv6XI/AAAAAAAAAHc/Rqt-KWQm8-EE6EA5SeL9DmFq4YbztoZcACLcBGAsYHQ/s1600/88325_gg.jpg',
+    imagem:
+      'https://1.bp.blogspot.com/-8mPjh_CAa2g/Xfg6L1rv6XI/AAAAAAAAAHc/Rqt-KWQm8-EE6EA5SeL9DmFq4YbztoZcACLcBGAsYHQ/s1600/88325_gg.jpg',
     titulo: 'Os Sete Maridos de Evelyn Hugo',
     autor: 'Taylor Jenkins Reid',
-    preco: 45.90,
+    preco: 45.9,
   },
   {
     id: 3,
     imagem: 'https://101livros.com/wp-content/uploads/2022/11/Reino-das-Bruxas-scaled.jpg',
     titulo: 'Reino das Bruxas',
     autor: 'Kerri Maniscalco',
-    preco: 48.50,
+    preco: 48.5,
   },
   {
     id: 4,
-    imagem: 'https://i0.wp.com/www.thenerddaily.com/wp-content/uploads/2019/01/Verity-by-Colleen-Hoover.jpg',
+    imagem:
+      'https://i0.wp.com/www.thenerddaily.com/wp-content/uploads/2019/01/Verity-by-Colleen-Hoover.jpg',
     titulo: 'Verity',
     autor: 'Colleen Hoover',
-    preco: 55.90,
+    preco: 55.9,
   },
   {
     id: 5,
@@ -56,22 +59,23 @@ const livros = [
   },
   {
     id: 8,
-    imagem: 'https://irp-cdn.multiscreensite.com/174487e2/dms3rep/multi/clarice-lispector-agua-viva.jpg',
+    imagem:
+      'https://irp-cdn.multiscreensite.com/174487e2/dms3rep/multi/clarice-lispector-agua-viva.jpg',
     titulo: 'Água Viva',
     autor: 'Clarice Lispector',
     preco: 33.94,
   },
 ]
 
-const searchQuery = ref("");
+const searchQuery = ref('')
 
 const filteredBooks = computed(() => {
-  const query = searchQuery.value.toLowerCase();
-  return livros.filter(book => book.titulo.toLowerCase().includes(query)); 
-});
+  const query = searchQuery.value.toLowerCase()
+  return livros.filter((book) => book.titulo.toLowerCase().includes(query))
+})
 
 function adicionarAoCarrinho(produto) {
-  const existente = carrinho.value.find(item => item.id === produto.id)
+  const existente = carrinho.value.find((item) => item.id === produto.id)
   if (existente) {
     existente.quantidade += 1
   } else {
@@ -80,7 +84,7 @@ function adicionarAoCarrinho(produto) {
 }
 
 function removerDoCarrinho(id) {
-  carrinho.value = carrinho.value.filter(item => item.id !== id)
+  carrinho.value = carrinho.value.filter((item) => item.id !== id)
 }
 
 function aumentarQuantidade(item) {
@@ -122,6 +126,17 @@ function aplicarCupom() {
 const totalComDesconto = computed(() => {
   return cupomAtivo.value ? totalCarrinho.value * 0.9 : totalCarrinho.value
 })
+
+function adicionarAosFavoritos(livro) {
+  const existe = favoritos.value.find((item) => item.id === livro.id)
+  if (!existe) {
+    favoritos.value.push(livro)
+  }
+}
+
+function removerDosFavoritos(id) {
+  favoritos.value = favoritos.value.filter((item) => item.id !== id)
+}
 </script>
 
 <template>
@@ -137,7 +152,7 @@ const totalComDesconto = computed(() => {
       </ul>
       <div class="barra-pesquisa">
         <input type="text" placeholder="Pesquisar" v-model="searchQuery" />
-        <span class="material-symbols-outlined">search</span>
+        <span class="material-icons">search</span>
       </div>
       <ul class="apos-barra">
         <li><a href="#termo">Termo</a></li>
@@ -146,15 +161,16 @@ const totalComDesconto = computed(() => {
         <li><a href="#devolucoes">Devoluções</a></li>
         <li class="icon-com-barra">
           <a href="#" @click.prevent="paginaAtual = 'carrinho'">
-            <span class="material-symbols-outlined">
-              shopping_cart</span>
+            <span class="material-icons">shopping_cart</span>
           </a>
         </li>
         <li class="icon-com-barra">
-          <a href="#favoritos"><span class="fa-solid fa-heart"></span></a>
+          <a href="#" @click.prevent="paginaAtual = 'favoritos'"
+            ><span class="material-icons">favorite</span></a
+          >
         </li>
         <li>
-          <a href="#perfil"><span class="fa-solid fa-user"></span></a>
+          <a href="#perfil"><span class="material-icons">person</span></a>
         </li>
       </ul>
     </nav>
@@ -171,12 +187,15 @@ const totalComDesconto = computed(() => {
           </div>
           <h1>Holly Black</h1>
           <p>
-            Holly Black é uma escritora e editora norte-americana mais conhecida por sua ficção infantil e juvenil. Seu trabalho inclui a série <span id="povo-do-ar">"O Povo do Ar"</span>, best-seller do The New York Times para jovens adultos.
+            Holly Black é uma escritora e editora norte-americana mais conhecida por sua ficção
+            infantil e juvenil. Seu trabalho inclui a série
+            <span id="povo-do-ar">"O Povo do Ar"</span>, best-seller do The New York Times para
+            jovens adultos.
           </p>
           <button @click="adicionarAoCarrinho(livros[0])">Acessar página do livro</button>
         </div>
         <div class="img">
-          <img src="https://i.ibb.co/RTy0nbh0/image-removebg-preview.png" alt="principe-cruel">
+          <img src="https://i.ibb.co/RTy0nbh0/image-removebg-preview.png" alt="principe-cruel" />
           <p>*within the stock limit</p>
         </div>
       </section>
@@ -184,15 +203,15 @@ const totalComDesconto = computed(() => {
       <section class="livros-section">
         <div class="botoes-informacoes" v-if="!searchQuery">
           <div class="item-info">
-            <i class="fas fa-truck"></i>
+            <span class="material-icons">local_shipping</span>
             <span>Frete grátis para SC</span>
           </div>
           <div class="item-info">
-            <i class="fas fa-star"></i>
+            <span class="material-icons">star</span>
             <span>Livros recomendados</span>
           </div>
           <div class="item-info">
-            <i class="fas fa-book"></i>
+            <span class="material-icons">import_contacts</span>
             <span>Mais vendidos</span>
           </div>
         </div>
@@ -200,7 +219,7 @@ const totalComDesconto = computed(() => {
         <div class="container">
           <h2 class="titulo-secao">Lançamentos</h2>
           <div v-if="filteredBooks.length === 0">
-            <p style="font-size: larger;">Nenhum resultado encontrado.</p>
+            <p style="font-size: larger">Nenhum resultado encontrado.</p>
           </div>
           <div class="livros-grid">
             <div v-for="livro in filteredBooks" :key="livro.id" class="card-livro">
@@ -211,7 +230,9 @@ const totalComDesconto = computed(() => {
               <p class="livro-autor">{{ livro.autor }}</p>
               <div class="preco-favorito">
                 <p class="livro-preco">R$ {{ livro.preco }}</p>
-                <span class="icone-coracao"><span class="far fa-heart"></span></span>
+                <span class="icone-coracao" @click="adicionarAosFavoritos(livro)"
+                  ><span class="far fa-heart"></span
+                ></span>
               </div>
               <div class="acoes">
                 <button class="btn-comprar" @click="adicionarAoCarrinho(livro)">
@@ -224,111 +245,132 @@ const totalComDesconto = computed(() => {
       </section>
     </section>
     <!--CARRINHO-->
-  <section v-if="paginaAtual === 'carrinho'" class="pagina-carrinho">
-    <h1>Carrinho</h1>
-    <div v-if="carrinho.length === 0">
-      <p>Seu carrinho está vazio.</p>
-      <button @click="paginaAtual = 'home'" class="btn-voltar">Voltar para loja</button>
-    </div>
+    <section v-if="paginaAtual === 'carrinho'" class="pagina-carrinho">
+      <h1>Carrinho</h1>
+      <div v-if="carrinho.length === 0">
+        <p>Seu carrinho está vazio.</p>
+        <button @click="paginaAtual = 'home'" class="btn-voltar">Voltar para loja</button>
+      </div>
 
-    <div v-else>
+      <div v-else>
         <div class="titulos">
           <h2>Título</h2>
           <h2>Quantidade</h2>
           <h2>Subtotal</h2>
         </div>
 
-  <div v-for="item in carrinho" :key="item.id" class="item-carrinho">
-    <!--TÍTULO-->
-      <div class="coluna">
-        <img :src="item.imagem" alt="Capa do livro" class="imagem-livro-carrinho" />
-        <div>
-          <h3 class="titulo-livro">{{ item.titulo }}</h3>
-          <p class="autor-livro">{{ item.autor }}</p>
-          <p><span>R$ {{ item.preco.toFixed(2) }}</span></p>
+        <div v-for="item in carrinho" :key="item.id" class="item-carrinho">
+          <!--TÍTULO-->
+          <div class="coluna">
+            <img :src="item.imagem" alt="Capa do livro" class="imagem-livro-carrinho" />
+            <div>
+              <h3 class="titulo-livro">{{ item.titulo }}</h3>
+              <p class="autor-livro">{{ item.autor }}</p>
+              <p>
+                <span>R$ {{ item.preco.toFixed(2) }}</span>
+              </p>
+            </div>
+          </div>
+          <!--QUANTIDADE-->
+          <div class="coluna-qtd">
+            <div class="quantidade-area">
+              <button @click="diminuirQuantidade(item)" class="btn-quantidade">-</button>
+              <span>{{ item.quantidade }}</span>
+              <button @click="aumentarQuantidade(item)" class="btn-quantidade">+</button>
+            </div>
+            <button @click="removerDoCarrinho(item.id)" class="btn-remover">
+              <span class="fa-solid fa-trash"></span>
+            </button>
+          </div>
+          <!--SUBTOTAL-->
+          <div class="coluna-preco">
+            <p>
+              <strong>R$ {{ (item.preco * item.quantidade).toFixed(2) }}</strong>
+            </p>
+          </div>
         </div>
-      </div>
-    <!--QUANTIDADE-->
-      <div class="coluna-qtd">
-        <div class="quantidade-area">
-          <button @click="diminuirQuantidade(item)" class="btn-quantidade">-</button>
-          <span>{{ item.quantidade }}</span>
-          <button @click="aumentarQuantidade(item)" class="btn-quantidade">+</button>
+        <button @click="paginaAtual = 'home'" class="btn-voltar">Voltar para loja</button>
+        <div class="cupom">
+          <input type="text" v-model="codigoCupom" placeholder="Código do cupom" />
+          <button @click="aplicarCupom">Inserir Cupom</button>
         </div>
-        <button @click="removerDoCarrinho(item.id)" class="btn-remover"><span class="fa-solid fa-trash"></span></button>
+        <p v-if="mensagemCupom">{{ mensagemCupom }}</p>
+        <ul class="total">
+          <li><strong>Total da Compra</strong></li>
+          <li class="line">
+            <p>Produtos:</p>
+            <p>R${{ totalCarrinho.toFixed(2) }}</p>
+          </li>
+          <li class="line">
+            <p>Frete:</p>
+            <p>Grátis</p>
+          </li>
+          <li class="totalDesconto">
+            <p>Total:</p>
+            <p>R${{ totalCarrinho.toFixed(2) }}</p>
+          </li>
+          <li class="totalDesconto" v-if="totalComDesconto < totalCarrinho">
+            <p>Total com desconto:</p>
+            <p>R${{ totalComDesconto.toFixed(2) }}</p>
+          </li>
+          <button>Ir para o pagamento</button>
+        </ul>
       </div>
-      <!--SUBTOTAL-->
-      <div class="coluna-preco">
-        <p><strong>R$ {{ (item.preco * item.quantidade).toFixed(2) }}</strong></p>
+    </section>
+    <section v-if="paginaAtual === 'favoritos'">
+      <h2>Meus Favoritos</h2>
+
+      <div v-if="favoritos.length === 0">
+        <p>Nenhum livro adicionado aos favoritos ainda.</p>
       </div>
-    </div>
-    <button @click="paginaAtual = 'home'" class="btn-voltar">Voltar para loja</button>
-    <div class="cupom">
-      <input type="text" v-model="codigoCupom" placeholder="Código do cupom" />
-      <button @click="aplicarCupom">Inserir Cupom</button>
-    </div>
-      <p v-if="mensagemCupom">{{ mensagemCupom }}</p> 
-      <ul class="total">
-        <li><strong>Total da Compra</strong></li>
-        <li class="line">
-          <p>Produtos:</p>
-          <p>R${{ totalCarrinho.toFixed(2) }}</p>
+
+      <ul v-else>
+        <li v-for="livro in favoritos" :key="livro.id">
+          <img :src="livro.imagem" alt="Capa" style="width: 100px" />
+          <div>{{ livro.titulo }} - {{ livro.autor }}</div>
+          <button @click="removerDosFavoritos(livro.id)">Remover dos Favoritos</button>
         </li>
-        <li class="line">
-          <p>Frete:</p>
-          <p>Grátis</p>
-        </li>
-        <li class="totalDesconto">
-          <p>Total:</p>
-          <p>R${{ totalCarrinho.toFixed(2) }}</p>
-        </li>
-        <li class="totalDesconto" v-if="totalComDesconto < totalCarrinho">
-          <p>Total com desconto:</p>
-          <p>R${{ totalComDesconto.toFixed(2) }}</p>
-        </li>
-        <button>Ir para o pagamento</button>
       </ul>
-  </div>
-</section>
+
+      <button @click="paginaAtual = 'home'" class="btn-voltar">Voltar para loja</button>
+    </section>
+      
+ 
   </main>
-    <!--RODAPÉ-->
-    <footer class="rodape">
-      <div class="container-rodape">
-        <div class="redes-sociais">
-          <a href="index.html" class="logo">IFBooks</a>
-          <div class="icones">
-            <a href="#facebook"><span class="fab fa-facebook"></span></a>
-            <a href="#instagram"><span class="fab fa-instagram"></span></a>
-            <a href="#twitter"><span class="fab fa-twitter"></span></a>
-          </div>
-        </div>
-        <div class="contatos">
-          <p>Contatos</p>
-          <p><span class="fas fa-phone-alt"></span> +55 47 99999-9999</p>
-          <p><span class="fas fa-envelope"></span> contato@ebooks.com</p>
-          <p><span class="fas fa-map-marker-alt"></span> Rua da Leitura, 123 - SC</p>
-          <div class="pagamento">
-            <img
-              src="https://i.ibb.co/ccfhYRbJ/paipal-1.png"
-              alt="PayPal"
-              class="icone-cartao"
-            />
-            <img
-              src="https://i.ibb.co/ybp3bbW/Master-Card-Logo-1979-1.png"
-              alt="Mastercard"
-              class="icone-cartao"
-            />
-            <img
-              src="https://i.ibb.co/bgpdtpx0/VISA-card-logo-1.png"
-              alt="Visa"
-              class="icone-cartao"
-            />
-          </div>
+  <!--RODAPÉ-->
+  <footer class="rodape">
+    <div class="container-rodape">
+      <div class="redes-sociais">
+        <a href="index.html" class="logo">IFBooks</a>
+        <div class="icones">
+          <a href="#facebook"><span class="fab fa-facebook"></span></a>
+          <a href="#instagram"><span class="fab fa-instagram"></span></a>
+          <a href="#twitter"><span class="fab fa-twitter"></span></a>
         </div>
       </div>
-      <hr class="linha-divisoria" />
-      <p class="copyright">© Alguns direitos reservados | IFBooks 2025</p>
-    </footer>
+      <div class="contatos">
+        <p>Contatos</p>
+        <p><span class="fas fa-phone-alt"></span> +55 47 99999-9999</p>
+        <p><span class="fas fa-envelope"></span> contato@ebooks.com</p>
+        <p><span class="fas fa-map-marker-alt"></span> Rua da Leitura, 123 - SC</p>
+        <div class="pagamento">
+          <img src="https://i.ibb.co/ccfhYRbJ/paipal-1.png" alt="PayPal" class="icone-cartao" />
+          <img
+            src="https://i.ibb.co/ybp3bbW/Master-Card-Logo-1979-1.png"
+            alt="Mastercard"
+            class="icone-cartao"
+          />
+          <img
+            src="https://i.ibb.co/bgpdtpx0/VISA-card-logo-1.png"
+            alt="Visa"
+            class="icone-cartao"
+          />
+        </div>
+      </div>
+    </div>
+    <hr class="linha-divisoria" />
+    <p class="copyright">© Alguns direitos reservados | IFBooks 2025</p>
+  </footer>
 </template>
 
 <style scoped>
@@ -459,12 +501,12 @@ nav ul li a {
   align-items: center;
   gap: 5rem;
   padding: 4rem 2rem;
-  margin-bottom: 2px solid #4E1EB5;
+  margin-bottom: 2px solid #4e1eb5;
   font-family: 'Poppins', sans-serif;
 }
 .autor-abril .holly,
 .autor-abril .img {
-  margin: 0; 
+  margin: 0;
   width: 40%;
   max-width: 400px;
 }
@@ -472,10 +514,10 @@ nav ul li a {
 .autor-abril h1 {
   font-weight: bold;
   font-size: xxx-large;
-  color: #382C2C;
+  color: #382c2c;
 }
 .autor-abril p {
-  color: #4D4C4C;
+  color: #4d4c4c;
 }
 .autor-abril div.holly {
   margin: 0 5vw;
@@ -483,7 +525,7 @@ nav ul li a {
 }
 .autor-abril div.holly div {
   width: 130px;
-  border: 2px solid #4E1EB5;
+  border: 2px solid #4e1eb5;
   padding: 7px 0 7px 0;
   margin: 2rem 0;
   border-radius: 8px;
@@ -491,10 +533,10 @@ nav ul li a {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 .autor-abril div.holly span {
-  color: #4E1EB5;
+  color: #4e1eb5;
 }
 #povo-do-ar {
-  color: #4E1EB5;
+  color: #4e1eb5;
   font-weight: bold;
 }
 .autor-abril div.holly p {
@@ -502,7 +544,7 @@ nav ul li a {
 }
 .autor-abril button {
   font-family: 'Poppins', sans-serif;
-  background-color: #4E1EB5;
+  background-color: #4e1eb5;
   color: white;
   border: none;
   border-radius: 4px;
@@ -525,7 +567,7 @@ nav ul li a {
 }
 .autor-abril div.img p {
   font-size: 15px;
-  color: #4D4C4C;
+  color: #4d4c4c;
   margin-top: 8px;
   text-align: right;
 }
@@ -534,7 +576,7 @@ nav ul li a {
 .livros-section {
   background-color: #fff;
   font-family: 'Poppins', sans-serif;
-  border-top: 2px solid #4e1eb5 ;
+  border-top: 2px solid #4e1eb5;
 }
 .botoes-informacoes {
   display: flex;
@@ -641,7 +683,7 @@ nav ul li a {
   max-width: 100%;
 }
 .pagina-carrinho h1 {
-  color: #4E1EB5;
+  color: #4e1eb5;
   font-size: xx-large;
 }
 .pagina-carrinho h2 {
@@ -655,7 +697,7 @@ nav ul li a {
 .titulos {
   display: flex;
   gap: 25vw;
-  border-bottom: 2px solid #4E1EB5;
+  border-bottom: 2px solid #4e1eb5;
   padding-bottom: 10px;
   margin-bottom: 20px;
   width: 100%;
@@ -683,10 +725,10 @@ nav ul li a {
   margin: 0 19vw 0 -19vw;
 }
 .imagem-livro-carrinho {
-  width: 100px; 
-  height: auto; 
-  border-radius: 4px; 
-  margin-right: 6px; 
+  width: 100px;
+  height: auto;
+  border-radius: 4px;
+  margin-right: 6px;
 }
 .quantidade-area {
   display: flex;
@@ -758,7 +800,7 @@ nav ul li a {
 }
 .total button {
   font-family: 'Poppins', sans-serif;
-  background-color: #4E1EB5;
+  background-color: #4e1eb5;
   color: white;
   border: none;
   border-radius: 4px;
@@ -782,9 +824,9 @@ nav ul li a {
   width: 200px;
   margin: 0 1vw 0 0;
 }
-.cupom button{
+.cupom button {
   font-family: 'Poppins', sans-serif;
-  background-color: #4E1EB5;
+  background-color: #4e1eb5;
   color: white;
   border: none;
   border-radius: 4px;

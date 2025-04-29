@@ -236,7 +236,7 @@ function removerDosFavoritos(id) {
               </div>
               <div class="acoes">
                 <button class="btn-comprar" @click="adicionarAoCarrinho(livro)">
-                  <span class="fas fa-shopping-cart"></span> Comprar
+                  <span class="material-icons">shopping_cart</span> Comprar
                 </button>
               </div>
             </div>
@@ -279,7 +279,7 @@ function removerDosFavoritos(id) {
               <button @click="aumentarQuantidade(item)" class="btn-quantidade">+</button>
             </div>
             <button @click="removerDoCarrinho(item.id)" class="btn-remover">
-              <span class="fa-solid fa-trash"></span>
+              <span class="material-icons">delete</span>
             </button>
           </div>
           <!--SUBTOTAL-->
@@ -652,6 +652,9 @@ nav ul li a {
   align-items: center;
   margin-top: 12px;
 }
+.acoes span {
+  font-size: 19px;
+}
 .preco-favorito {
   display: flex;
   justify-content: space-between;
@@ -750,14 +753,14 @@ nav ul li a {
 }
 .btn-remover {
   background-color: transparent;
-  color: #ff4d4d;
+  color: #4e1eb5;
   border: none;
   font-size: 1rem;
   cursor: pointer;
   font-weight: bold;
 }
 .btn-remover:hover {
-  color: #d10000;
+  color: #3b0ca0;
 }
 .btn-voltar {
   margin-top: 20px;

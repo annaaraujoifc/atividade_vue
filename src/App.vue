@@ -147,9 +147,6 @@ function aplicarCupom() {
 const totalComDesconto = computed(() => {
   return cupomAtivo.value ? totalCarrinho.value * 0.9 : totalCarrinho.value
 })
-
-
-
 </script>
 
 <template>
@@ -178,7 +175,8 @@ const totalComDesconto = computed(() => {
           </a>
         </li>
         <li class="icon-com-barra">
-          <a href="#" @click.prevent="paginaAtual = 'favoritos'"><span class="material-icons">favorite</span></a>
+          <a href="#" @click.prevent="paginaAtual = 'favoritos'"
+            ><span class="material-icons">favorite</span></a>
         </li>
         <li>
           <a href="#perfil"><span class="material-icons">person</span></a>
@@ -329,7 +327,7 @@ const totalComDesconto = computed(() => {
         </ul>
       </div>
     </section>
-    <!-- Favoritos -->
+    <!--FAVORITOS-->
     <section class="favoritos" v-if="paginaAtual === 'favoritos'">
       <h2>Meus Favoritos</h2>
       <div v-if="favoritos.length === 0">
@@ -367,7 +365,7 @@ const totalComDesconto = computed(() => {
           <img src="https://i.ibb.co/ccfhYRbJ/paipal-1.png" alt="PayPal" class="icone-cartao" />
           <img src="https://i.ibb.co/ybp3bbW/Master-Card-Logo-1979-1.png" alt="Mastercard" class="icone-cartao" />
           <img src="https://i.ibb.co/bgpdtpx0/VISA-card-logo-1.png" alt="Visa" class="icone-cartao" />
-        </div>
+         </div>
       </div>
     </div>
     <hr class="linha-divisoria" />
@@ -465,13 +463,10 @@ const totalComDesconto = computed(() => {
 .btn-voltar:hover {
   background: #3a1691;
 }
-
-
 /*MENU*/
 header {
   font-family: 'Poppins', sans-serif;
 }
-
 .icon-com-barra {
   position: relative;
   display: flex;
@@ -480,7 +475,6 @@ header {
   padding-right: 5px;
   margin-right: -10px;
 }
-
 .icon-com-barra::after {
   content: '';
   position: absolute;
@@ -490,18 +484,15 @@ header {
   height: 22px;
   background-color: #4e1eb5;
 }
-
 .icon-com-barra a span,
 .apos-barra li a span {
   color: #4e1eb5;
 }
-
 .apos-barra li {
   display: flex;
   align-items: center;
   justify-content: center;
 }
-
 .apos-barra li a {
   display: flex;
   align-items: center;
@@ -510,11 +501,9 @@ header {
   padding: 0 10px;
   color: #7b7881;
 }
-
 .apos-barra li a:hover {
   color: #4e1eb5;
 }
-
 .barra-pesquisa {
   display: flex;
   align-items: center;
@@ -522,7 +511,6 @@ header {
   padding: 3px 15px;
   margin: 0.7vw 5vw 0 5vw;
 }
-
 .barra-pesquisa input {
   border: none;
   outline: none;
@@ -532,14 +520,12 @@ header {
   padding: 5px 0 5px 0;
   flex-grow: 1;
 }
-
 .barra-pesquisa span {
   color: #4e1eb5;
   font-size: 18px;
   margin-left: 70px;
   cursor: pointer;
 }
-
 nav {
   display: flex;
   justify-content: center;
@@ -547,7 +533,6 @@ nav {
   flex-wrap: wrap;
   margin: 0.5vw 0 0 0;
 }
-
 nav ul {
   list-style: none;
   display: flex;
@@ -556,29 +541,23 @@ nav ul {
   padding: 0;
   margin: 0;
 }
-
 nav ul li {
   padding: 1rem 1rem 0 0;
 }
-
 nav ul li a {
   text-decoration: none;
 }
-
 .logo {
   font-size: 18px;
   color: #231f2d;
 }
-
 .antes-barra {
   align-items: center;
   text-align: center;
 }
-
 .antes-barra li:first-child {
   position: relative;
 }
-
 .antes-barra li:first-child::after {
   content: '';
   position: absolute;
@@ -588,18 +567,15 @@ nav ul li a {
   height: 35px;
   background-color: #4e1eb5;
 }
-
 .slogan {
   color: #4e1eb5;
   font-size: 14px;
   line-height: 1;
   margin-left: -55px;
 }
-
 .apos-barra a {
   color: #4e1eb5;
 }
-
 .linha-roxa {
   width: 100%;
   height: 1px;
@@ -617,7 +593,6 @@ nav ul li a {
   margin-bottom: 2px solid #4e1eb5;
   font-family: 'Poppins', sans-serif;
 }
-
 .autor-abril .holly,
 .autor-abril .img {
   margin: 0;
@@ -630,16 +605,16 @@ nav ul li a {
   font-size: xxx-large;
   color: #382c2c;
 }
-
 .autor-abril p {
   color: #4d4c4c;
 }
-
+.autor-abril p {
+  color: #4d4c4c;
+}
 .autor-abril div.holly {
   margin: 0 5vw;
   width: 45%;
 }
-
 .autor-abril div.holly div {
   width: 130px;
   border: 2px solid #4e1eb5;
@@ -649,20 +624,19 @@ nav ul li a {
   text-align: center;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
-
 .autor-abril div.holly span {
   color: #4e1eb5;
 }
-
+.autor-abril div.holly span {
+  color: #4e1eb5;
+}
 #povo-do-ar {
   color: #4e1eb5;
   font-weight: bold;
 }
-
 .autor-abril div.holly p {
   max-width: 500px;
 }
-
 .autor-abril button {
   font-family: 'Poppins', sans-serif;
   background-color: #4e1eb5;
@@ -675,21 +649,17 @@ nav ul li a {
   cursor: pointer;
   transition: background-color 0.3s;
 }
-
 .autor-abril button:hover {
   background-color: #3b0ca0;
 }
-
 .autor-abril div.img {
   margin: 0 5vw;
   width: 45%;
 }
-
 .autor-abril div.img img {
   width: 440px;
   height: auto;
 }
-
 .autor-abril div.img p {
   font-size: 15px;
   color: #4d4c4c;
@@ -703,7 +673,6 @@ nav ul li a {
   font-family: 'Poppins', sans-serif;
   border-top: 2px solid #4e1eb5;
 }
-
 .botoes-informacoes {
   display: flex;
   justify-content: space-around;
@@ -712,11 +681,9 @@ nav ul li a {
   font-weight: 700;
   border-bottom: 2px solid #4e1eb5;
 }
-
 .botoes-informacoes span {
   font-weight: 600;
 }
-
 .item-info {
   display: flex;
   align-items: center;
@@ -725,12 +692,10 @@ nav ul li a {
   font-weight: 700;
   font-size: 16px;
 }
-
 .item-info span {
   font-size: 20px;
   font-weight: 700;
 }
-
 .container {
   max-width: 1200px;
   margin: 0 auto;
@@ -809,38 +774,31 @@ nav ul li a {
   align-items: center;
   gap: 8px;
 }
-
 .btn-comprar:hover {
   background-color: #3b0ca0;
 }
-
 .icone-coracao {
   font-size: 18px;
   color: #4e1eb5;
 }
-
 /* CARRINHO */
 .pagina-carrinho {
   padding: 3rem;
   font-family: 'Poppins', sans-serif;
   max-width: 100%;
 }
-
 .pagina-carrinho h1 {
   color: #4e1eb5;
   font-size: xx-large;
 }
-
 .pagina-carrinho h2 {
   font-weight: bold;
   font-size: x-large;
 }
-
 .pagina-carrinho h3 {
   font-weight: bold;
   font-size: large;
 }
-
 .titulos {
   display: flex;
   gap: 25vw;
@@ -850,7 +808,6 @@ nav ul li a {
   width: 100%;
   margin: 2vw 0 1.5vw 0;
 }
-
 .item-carrinho {
   display: flex;
   justify-content: space-between;
@@ -859,38 +816,40 @@ nav ul li a {
   border-bottom: 2px solid #ddd;
   padding-bottom: 1rem;
 }
-
 .coluna {
   display: flex;
 }
-
 .coluna span {
   font-weight: bold;
 }
-
+.coluna {
+  display: flex;
+}
+.coluna span {
+  font-weight: bold;
+}
 .coluna-qtd {
   display: flex;
   margin: 0 15vw 0 -19vw;
 }
-
 .coluna-preco {
   margin: 0 19vw 0 -19vw;
 }
-
+.coluna-preco {
+  margin: 0 19vw 0 -19vw;
+}
 .imagem-livro-carrinho {
   width: 100px;
   height: auto;
   border-radius: 4px;
   margin-right: 6px;
 }
-
 .quantidade-area {
   display: flex;
   border: 2px solid black;
   border-radius: 3px;
   padding: 5px;
 }
-
 .quantidade-area span {
   min-width: 30px;
   text-align: center;
@@ -898,13 +857,11 @@ nav ul li a {
   font-weight: bold;
   font-size: 1rem;
 }
-
 .btn-quantidade {
   border: none;
   background-color: white;
   cursor: pointer;
 }
-
 .btn-remover {
   background-color: transparent;
   color: #ff4d4d;
@@ -913,11 +870,9 @@ nav ul li a {
   cursor: pointer;
   font-weight: bold;
 }
-
 .btn-remover:hover {
   color: #d10000;
 }
-
 .btn-voltar {
   margin-top: 20px;
   padding: 10px 20px;
@@ -931,7 +886,6 @@ nav ul li a {
   font-size: 16px;
   font-family: 'Poppins', sans-serif;
 }
-
 .total {
   margin: 2vw 65vw 0 65vw;
   border: solid 2px black;
@@ -941,28 +895,23 @@ nav ul li a {
   list-style: none;
   color: #000000;
 }
-
 .total li {
   padding: 8px 0;
 }
-
 .total li.line {
   display: flex;
   justify-content: space-between;
   border-bottom: 1px solid black;
 }
-
 .total li.totalDesconto {
   display: flex;
   justify-content: space-between;
   border-bottom: 1px solid black;
 }
-
 .total strong {
   font-size: large;
   font-weight: bold;
 }
-
 .total button {
   font-family: 'Poppins', sans-serif;
   background-color: #4e1eb5;
@@ -976,11 +925,9 @@ nav ul li a {
   transition: background-color 0.3s;
   justify-content: center;
 }
-
 .total button:hover {
   background-color: #3b0ca0;
 }
-
 .cupom input {
   font-family: 'Poppins', sans-serif;
   padding: 10px;
@@ -991,7 +938,6 @@ nav ul li a {
   width: 200px;
   margin: 0 1vw 0 0;
 }
-
 .cupom button {
   font-family: 'Poppins', sans-serif;
   background-color: #4e1eb5;
@@ -1005,7 +951,6 @@ nav ul li a {
   transition: background-color 0.3s;
   justify-content: center;
 }
-
 .cupom button:hover {
   background-color: #3b0ca0;
 }
@@ -1033,18 +978,18 @@ nav ul li a {
   color: white;
   text-decoration: none;
 }
-
 .icones {
   display: flex;
   gap: 10px;
   width: 20px;
   height: 20px;
 }
-
 .icones span {
   color: white;
 }
-
+.icones span {
+  color: white;
+}
 .contatos {
   text-align: left;
   display: flex;
@@ -1052,36 +997,30 @@ nav ul li a {
   align-items: flex-start;
   gap: 5px;
 }
-
 .contatos p {
   margin: 4px 0;
   display: flex;
   align-items: center;
   gap: 8px;
 }
-
 .contatos span {
   font-size: 14px;
   color: white;
 }
-
 .titulo-contato {
   font-weight: bold;
   margin-bottom: 6px;
   font-size: 15px;
 }
-
 .pagamento {
   margin-top: 12px;
   display: flex;
   gap: 8px;
 }
-
 .icone-cartao {
   width: 38px;
   height: 25px;
 }
-
 .linha-divisoria {
   width: 100%;
   height: 2px;
@@ -1089,7 +1028,6 @@ nav ul li a {
   border: none;
   margin: 20px 0;
 }
-
 .copyright {
   text-align: center;
   padding: 10px;

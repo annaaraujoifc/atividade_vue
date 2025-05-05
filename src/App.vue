@@ -337,7 +337,7 @@ const totalComDesconto = computed(() => {
         <li v-for="livro in favoritos" :key="livro.id">
           <img :src="livro.imagem" alt="Capa" style="width: 100px" />
           <div>{{ livro.titulo }} - {{ livro.autor }}</div>
-          <button @click="removerDosFavoritos(livro.id)">Remover dos Favoritos</button>
+          <button @click="removerDosFavoritos(livro.id)" class="remover-favoritos">Remover dos Favoritos</button>
         </li>
       </ul>
       <button @click="paginaAtual = 'home'" class="btn-voltar">Voltar para loja</button>
@@ -374,95 +374,6 @@ const totalComDesconto = computed(() => {
 </template>
 
 <style scoped>
-/* Favoritos */
-.icone-heart {
-  font-size: 24px;
-  cursor: pointer;
-  color: #4e1eb5;
-  transition: color 0.3s ease;
-}
-
-.fas.fa-heart {
-  color: #888 !important;
-}
-
-.favoritos {
-  color: #4e1eb5;
-  padding: 2rem 5%;
-  text-align: left;
-}
-
-.favoritos h2 {
-  color: #4e1eb5;
-  margin-bottom: 2rem;
-  font-size: 2rem;
-  font-weight: bolder;
-}
-
-.favoritos ul {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 3rem;
-  padding: 0;
-  list-style: none;
-  justify-content: flex-start;
-}
-
-.favoritos li {
-  padding: 1rem;
-  flex: 1 1 200px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  box-sizing: border-box;
-  height: 300px;
-  justify-content: space-between;
-}
-
-.favoritos img {
-  width: 100px;
-  height: 150px;
-  object-fit: cover;
-}
-
-.favoritos div {
-  margin: 0.8rem 0;
-  font-size: 1rem;
-  font-weight: 600;
-  height: 3em;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.favoritos button {
-  background: #4e1eb5;
-  color: #fff;
-  border: none;
-  padding: 0.5rem 0.8rem;
-  cursor: pointer;
-  font-size: 0.85rem;
-  font-weight: normal;
-  border-radius: 5px;
-  margin-top: auto;
-}
-
-.favoritos button:hover {
-  background: #3a1691;
-}
-
-.btn-voltar {
-  background: #4e1eb5;
-  color: #fff;
-  border: none;
-  padding: 0.8rem 1rem;
-  cursor: pointer;
-  font-weight: bold;
-}
-
-.btn-voltar:hover {
-  background: #3a1691;
-}
 /*MENU*/
 header {
   font-family: 'Poppins', sans-serif;
@@ -957,7 +868,88 @@ nav ul li a {
 .cupom button:hover {
   background-color: #3b0ca0;
 }
-
+/*FAVORITOS*/
+.icone-heart {
+  font-size: 24px;
+  cursor: pointer;
+  color: #4e1eb5;
+  transition: color 0.3s ease;
+}
+.fas.fa-heart {
+  color: #888 !important;
+}
+.favoritos {
+  color: #4e1eb5;
+  padding: 2rem 5%;
+  text-align: left;
+  font-family: 'Poppins', sans-serif;
+}
+.favoritos h2 {
+  color: #4e1eb5;
+  margin-bottom: 2rem;
+  font-size: 2rem;
+}
+.favoritos p {
+  color: #231f2d;
+}
+.favoritos ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3rem;
+  padding: 0;
+  list-style: none;
+  justify-content: flex-start;
+}
+.favoritos li {
+  padding: 1rem;
+  flex: 1 1 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  box-sizing: border-box;
+  height: 300px;
+  justify-content: space-between;
+}
+.favoritos img {
+  width: 100px;
+  height: 150px;
+  object-fit: cover;
+}
+.favoritos div {
+  margin: 0.8rem 0;
+  font-size: 1rem;
+  font-weight: 600;
+  height: 3em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.favoritos button.remover-favoritos {
+  background: #4e1eb5;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 0.8rem;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: normal;
+  border-radius: 5px;
+}
+button.remover-favoritos:hover {
+  background: #3a1691;
+}
+.btn-voltar button{
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: white;
+  color: black;
+  border: 2px solid black;
+  border-radius: 4px;
+  cursor: pointer;
+  display: block;
+  margin-right: auto;
+  font-size: 16px;
+  font-family: 'Poppins', sans-serif;
+}
 /*RODAPÉ*/
 .rodape {
   margin: 10vw 0 0 0;

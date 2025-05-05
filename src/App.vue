@@ -67,6 +67,27 @@ const livros = [
   },
 ]
 
+const toggleFavorito = (livro) => {
+  const existe = favoritos.value.find(item => item.id === livro.id);
+  if (existe) {
+    removerDosFavoritos(livro.id);
+  } else {
+    adicionarAosFavoritos(livro);
+  }
+};
+
+const adicionarAosFavoritos = (livro) => {
+  favoritos.value.push(livro);
+};
+
+const removerDosFavoritos = (id) => {
+  favoritos.value = favoritos.value.filter(item => item.id !== id);
+};
+
+const isFavoritado = (livro) => {
+  return favoritos.value.some(item => item.id === livro.id);
+};
+
 const searchQuery = ref('')
 
 const filteredBooks = computed(() => {
@@ -126,17 +147,6 @@ function aplicarCupom() {
 const totalComDesconto = computed(() => {
   return cupomAtivo.value ? totalCarrinho.value * 0.9 : totalCarrinho.value
 })
-
-function adicionarAosFavoritos(livro) {
-  const existe = favoritos.value.find((item) => item.id === livro.id)
-  if (!existe) {
-    favoritos.value.push(livro)
-  }
-}
-
-function removerDosFavoritos(id) {
-  favoritos.value = favoritos.value.filter((item) => item.id !== id)
-}
 </script>
 
 <template>
@@ -166,8 +176,7 @@ function removerDosFavoritos(id) {
         </li>
         <li class="icon-com-barra">
           <a href="#" @click.prevent="paginaAtual = 'favoritos'"
-            ><span class="material-icons">favorite</span></a
-          >
+            ><span class="material-icons">favorite</span></a>
         </li>
         <li>
           <a href="#perfil"><span class="material-icons">person</span></a>
@@ -230,9 +239,10 @@ function removerDosFavoritos(id) {
               <p class="livro-autor">{{ livro.autor }}</p>
               <div class="preco-favorito">
                 <p class="livro-preco">R$ {{ livro.preco }}</p>
-                <span class="icone-coracao" @click="adicionarAosFavoritos(livro)"
-                  ><span class="far fa-heart"></span
-                ></span>
+                <span class="icone-coracao" @click="toggleFavorito(livro)">
+                  <i :class="[isFavoritado(livro) ? 'fas' : 'far', 'fa-heart', 'icone-heart']"></i>
+                </span>
+
               </div>
               <div class="acoes">
                 <button class="btn-comprar" @click="adicionarAoCarrinho(livro)">
@@ -317,13 +327,12 @@ function removerDosFavoritos(id) {
         </ul>
       </div>
     </section>
-    <section v-if="paginaAtual === 'favoritos'">
+    <!--FAVORITOS-->
+    <section class="favoritos" v-if="paginaAtual === 'favoritos'">
       <h2>Meus Favoritos</h2>
-
       <div v-if="favoritos.length === 0">
         <p>Nenhum livro adicionado aos favoritos ainda.</p>
       </div>
-
       <ul v-else>
         <li v-for="livro in favoritos" :key="livro.id">
           <img :src="livro.imagem" alt="Capa" style="width: 100px" />
@@ -331,11 +340,10 @@ function removerDosFavoritos(id) {
           <button @click="removerDosFavoritos(livro.id)">Remover dos Favoritos</button>
         </li>
       </ul>
-
       <button @click="paginaAtual = 'home'" class="btn-voltar">Voltar para loja</button>
     </section>
-      
- 
+
+
   </main>
   <!--RODAPÉ-->
   <footer class="rodape">
@@ -355,17 +363,9 @@ function removerDosFavoritos(id) {
         <p><span class="fas fa-map-marker-alt"></span> Rua da Leitura, 123 - SC</p>
         <div class="pagamento">
           <img src="https://i.ibb.co/ccfhYRbJ/paipal-1.png" alt="PayPal" class="icone-cartao" />
-          <img
-            src="https://i.ibb.co/ybp3bbW/Master-Card-Logo-1979-1.png"
-            alt="Mastercard"
-            class="icone-cartao"
-          />
-          <img
-            src="https://i.ibb.co/bgpdtpx0/VISA-card-logo-1.png"
-            alt="Visa"
-            class="icone-cartao"
-          />
-        </div>
+          <img src="https://i.ibb.co/ybp3bbW/Master-Card-Logo-1979-1.png" alt="Mastercard" class="icone-cartao" />
+          <img src="https://i.ibb.co/bgpdtpx0/VISA-card-logo-1.png" alt="Visa" class="icone-cartao" />
+         </div>
       </div>
     </div>
     <hr class="linha-divisoria" />
@@ -374,6 +374,95 @@ function removerDosFavoritos(id) {
 </template>
 
 <style scoped>
+/* Favoritos */
+.icone-heart {
+  font-size: 24px;
+  cursor: pointer;
+  color: #4e1eb5;
+  transition: color 0.3s ease;
+}
+
+.fas.fa-heart {
+  color: #888 !important;
+}
+
+.favoritos {
+  color: #4e1eb5;
+  padding: 2rem 5%;
+  text-align: left;
+}
+
+.favoritos h2 {
+  color: #4e1eb5;
+  margin-bottom: 2rem;
+  font-size: 2rem;
+  font-weight: bolder;
+}
+
+.favoritos ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3rem;
+  padding: 0;
+  list-style: none;
+  justify-content: flex-start;
+}
+
+.favoritos li {
+  padding: 1rem;
+  flex: 1 1 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  box-sizing: border-box;
+  height: 300px;
+  justify-content: space-between;
+}
+
+.favoritos img {
+  width: 100px;
+  height: 150px;
+  object-fit: cover;
+}
+
+.favoritos div {
+  margin: 0.8rem 0;
+  font-size: 1rem;
+  font-weight: 600;
+  height: 3em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.favoritos button {
+  background: #4e1eb5;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 0.8rem;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: normal;
+  border-radius: 5px;
+  margin-top: auto;
+}
+
+.favoritos button:hover {
+  background: #3a1691;
+}
+
+.btn-voltar {
+  background: #4e1eb5;
+  color: #fff;
+  border: none;
+  padding: 0.8rem 1rem;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.btn-voltar:hover {
+  background: #3a1691;
+}
 /*MENU*/
 header {
   font-family: 'Poppins', sans-serif;
@@ -519,6 +608,9 @@ nav ul li a {
 .autor-abril p {
   color: #4d4c4c;
 }
+.autor-abril p {
+  color: #4d4c4c;
+}
 .autor-abril div.holly {
   margin: 0 5vw;
   width: 45%;
@@ -531,6 +623,9 @@ nav ul li a {
   border-radius: 8px;
   text-align: center;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.autor-abril div.holly span {
+  color: #4e1eb5;
 }
 .autor-abril div.holly span {
   color: #4e1eb5;
@@ -606,17 +701,20 @@ nav ul li a {
   margin: 0 auto;
   padding: 40px 20px;
 }
+
 .titulo-secao {
   font-size: 28px;
   margin: 0 0 2vw 0;
   font-weight: 600;
 }
+
 .livros-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 24px;
   row-gap: 75px;
 }
+
 .card-livro {
   display: flex;
   flex-direction: column;
@@ -624,28 +722,33 @@ nav ul li a {
   justify-content: space-between;
   height: 100%;
 }
+
 .livro-capa img {
   width: auto;
   height: 240px;
   object-fit: contain;
   margin-bottom: 10px;
 }
+
 .livro-titulo {
   font-size: 15px;
   font-weight: bold;
   margin-top: 10px;
   text-align: justify;
 }
+
 .livro-autor {
   color: #555;
   font-size: 13px;
   text-align: justify;
 }
+
 .livro-preco {
   margin: 8px 0;
   font-weight: bold;
   text-align: left;
 }
+
 .acoes {
   display: flex;
   justify-content: center;
@@ -655,12 +758,14 @@ nav ul li a {
 .acoes span {
   font-size: 19px;
 }
+
 .preco-favorito {
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 87%;
 }
+
 .btn-comprar {
   background-color: #4e1eb5;
   color: white;
@@ -720,9 +825,18 @@ nav ul li a {
 .coluna span {
   font-weight: bold;
 }
+.coluna {
+  display: flex;
+}
+.coluna span {
+  font-weight: bold;
+}
 .coluna-qtd {
   display: flex;
   margin: 0 15vw 0 -19vw;
+}
+.coluna-preco {
+  margin: 0 19vw 0 -19vw;
 }
 .coluna-preco {
   margin: 0 19vw 0 -19vw;
@@ -852,6 +966,7 @@ nav ul li a {
   font-size: 14px;
   font-family: 'Poppins', sans-serif;
 }
+
 .container-rodape {
   padding: 40px 10vw 20px;
   display: flex;
@@ -859,6 +974,7 @@ nav ul li a {
   flex-wrap: wrap;
   align-items: flex-start;
 }
+
 .redes-sociais .logo {
   font-size: 15px;
   margin-bottom: 10px;
@@ -870,6 +986,9 @@ nav ul li a {
   gap: 10px;
   width: 20px;
   height: 20px;
+}
+.icones span {
+  color: white;
 }
 .icones span {
   color: white;

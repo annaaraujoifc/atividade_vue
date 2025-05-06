@@ -358,9 +358,9 @@ const totalComDesconto = computed(() => {
       </div>
       <div class="contatos">
         <p>Contatos</p>
-        <p><span class="fas fa-phone-alt"></span> +55 47 99999-9999</p>
+        <p><span class="material-icons">call</span>+55 47 99999-9999</p>
         <p><span class="fas fa-envelope"></span> contato@ebooks.com</p>
-        <p><span class="fas fa-map-marker-alt"></span> Rua da Leitura, 123 - SC</p>
+        <p><span class="material-icons">home</span> Rua da Leitura, 123 - SC</p>
         <div class="pagamento">
           <img src="https://i.ibb.co/ccfhYRbJ/paipal-1.png" alt="PayPal" class="icone-cartao" />
           <img src="https://i.ibb.co/ybp3bbW/Master-Card-Logo-1979-1.png" alt="Mastercard" class="icone-cartao" />
